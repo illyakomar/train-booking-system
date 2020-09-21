@@ -29,12 +29,10 @@ header.masthead {
 
 header.masthead .overlay {
   position: absolute;
-  background-color: #212529;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
-  opacity: 0.3;
 }
 
 header.masthead h1 {
@@ -112,15 +110,26 @@ header.masthead h1 {
 
 .call-to-action .overlay {
   position: absolute;
-  background-color: #212529;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
-  opacity: 0.3;
+
 }
 
 footer.footer {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+.btn-rounded {
+    border-radius: 19px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+}
+
+
+.glow {
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
 }

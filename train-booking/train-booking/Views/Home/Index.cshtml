@@ -14,46 +14,44 @@
 
     <title>Головна</title>
 
-    <!-- Bootstrap core CSS -->
+    
     <link href="~/lib/template/landing-page/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
     <link href="~/lib/template/landing-page/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
     <link href="~/lib/template/landing-page/css/landing-page.css" rel="stylesheet">
-    <link href="~/lib/template/landing-page/css/landing-page.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="~/lib/template/images/favicon-32.png" />
 
 </head>
 
 <body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-light bg-light static-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
-            <a class="btn btn-primary" href="#">Sign In</a>
-        </div>
-    </nav>
-
-    <!-- Masthead -->
     <header class="masthead text-white text-center">
-        <div class="overlay"></div>
+        <div class="overlay">
+            <nav class="navbar navbar-light bg-ligh static-top">
+                <div class="container">
+                    <img class="w-25" src="~/lib/template/landing-page/img/logo-landpage.png">
+                    <button type="button" class="btn btn-primary btn-rounded" href="#">Вхід</button>
+                </div>
+            </nav>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-xl-9 mx-auto">
-                    <h1 class="mb-5">Купити ЖД квитки онлайн</h1>
+                    <h1 class="mb-3 glow">Купити ЖД квитки онлайн</h1>
                 </div>
-                <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                <div class="col-md-10 col-lg-9 col-xl-9 mx-auto">
                     <form>
-                        <div class="form-row">
-                            <div class="col-12 col-md-9 mb-2 mb-md-0">
-                                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
+                        <div class="form-row d-flex justify-content-between">
+                            <div>
+                                <input type="search" class="form-control " placeholder="Звідки">
                             </div>
-                            <div class="col-12 col-md-3">
-                                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+                            <div>
+                                <input type="search" class="form-control  " placeholder="Куди">
+                            </div>
+                            <div>
+                                <input type="date" class="form-control  " placeholder="Дата">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-block btn-group-sm btn-danger">Знайти</button>
                             </div>
                         </div>
                     </form>
@@ -62,26 +60,26 @@
         </div>
     </header>
 
-    <!-- Icons Grid -->
+
     <section class="features-icons bg-light text-center">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <i class="icon-screen-desktop m-auto text-primary"></i>
+                            <i class="icon-list m-auto text-primary"></i>
                         </div>
-                        <h3>Fully Responsive</h3>
-                        <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
+                        <h3>Розклад поїздів</h3>
+                        <p class="lead mb-0">Будьте завжди в курсі! Розклад поїздів, маршрути, станції</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <i class="icon-layers m-auto text-primary"></i>
+                            <i class="icon-magnifier m-auto text-primary"></i>
                         </div>
-                        <h3>Bootstrap 4 Ready</h3>
-                        <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
+                        <h3>Шукаємо квиток за вас</h3>
+                        <p class="lead mb-0">Немає потрібних квитків? Ми знайдемо їх і миттєво сповістимо вас про це</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -89,74 +87,109 @@
                         <div class="features-icons-icon d-flex">
                             <i class="icon-check m-auto text-primary"></i>
                         </div>
-                        <h3>Easy to Use</h3>
-                        <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+                        <h3>Повернення квитків онлайн</h3>
+                        <p class="lead mb-0">Змінились плани? Поверніть кошти за квиток через наш сайт!</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Image Showcases -->
-    <section class="showcase">
-        <div class="container-fluid p-0">
-            <div class="row no-gutters">
-
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('lib/template/landing-page/img/bg-showcase-1.jpg');"></div>
-                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                    <h2>Fully Responsive Design</h2>
-                    <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="~/lib/template/landing-page/img/ukraine.png" alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="row no-gutters">
-                <div class="col-lg-6 text-white showcase-img" style="background-image: url('lib/template/landing-page/img/bg-showcase-2.jpg');"></div>
-                <div class="col-lg-6 my-auto showcase-text">
-                    <h2>Updated For Bootstrap 4</h2>
-                    <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 4!</p>
-                </div>
-            </div>
-            <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('lib/template/landing-page/img/bg-showcase-3.jpg');"></div>
-                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                    <h2>Easy to Use &amp; Customize</h2>
-                    <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Популярні напрямки по Україні</h2>
+                        <p>&bull; Київ-Пасажирський → Львів</p>
+                        <p>&bull; Київ-Пасажирський → Харків-Пас</p>
+                        <p>&bull; Київ-Пасажирський → Одеса-Головна</p>
+                        <p>&bull; Київ-Пасажирський → Дніпро-Головний</p>
+                        <p>&bull; Київ-Пасажирський → Вінниця</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="~/lib/template/landing-page/img/ukraine.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">Пошук і бронювання ж/д квитків</h2>
+                        <p>Щоб знайти ж/д квитки потрібно декілька секунд. Введіть:</p>
+                        <p>&bull; Пункт відправлення та призначення</p>
+                        <p>&bull; Дата поїздки.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="~/lib/template/landing-page/img/vokzal.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Наші переваги</h2>
+                        <p>&bull; Легкий процес пошуку і покупки</p>
+                        <p>&bull; Відсутність додаткових зборів і комісій</p>
+                        <p>&bull; Дотримання безпеки даних, що вводяться</p>
+                        <p>&bull; Економія часу</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <section class="testimonials text-center bg-light">
         <div class="container">
-            <h2 class="mb-5">What people are saying...</h2>
+            <h2 class="mb-5">Відгуки наших клієнтів</h2>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="~/lib/template/landing-page/img/testimonials-1.jpg" alt="">
-                        <h5>Margaret E.</h5>
-                        <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                        <h5>Савенко Елена</h5>
+                        <p class="font-weight-light mb-0">"Спасибо большое. У вас на сайте решила все свои вопросы касающиеся поездки!"</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="~/lib/template/landing-page/img/testimonials-2.jpg" alt="">
-                        <h5>Fred S.</h5>
-                        <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                        <h5>Максим Ольховик</h5>
+                        <p class="font-weight-light mb-0">"Вперше замовляв квиток через цей сайт, мені сподобалось, зручний сервіс"</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
                         <img class="img-fluid rounded-circle mb-3" src="~/lib/template/landing-page/img/testimonials-3.jpg" alt="">
-                        <h5>Sarah W.</h5>
-                        <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                        <h5>Наталия Ерикссон</h5>
+                        <p class="font-weight-light mb-0">"Я обратилась и мне дали информацию, которая меня интересовала."</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="call-to-action text-white text-center">
+
+    @*<section class="call-to-action text-white text-center">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -177,37 +210,20 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>*@
 
-    <!-- Footer -->
+
     <footer class="footer bg-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item">
-                            <a href="#">About</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a href="#">Contact</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a href="#">Terms of Use</a>
-                        </li>
-                        <li class="list-inline-item">&sdot;</li>
-                        <li class="list-inline-item">
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                    </ul>
                     <p class="text-muted small mb-4 mb-lg-0">&copy; WiseSoft 2020. All Rights Reserved.</p>
                 </div>
                 <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item mr-3">
                             <a href="#">
-                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                                <i class="fab fa-facebook-official fa-2x fa-fw"></i>
                             </a>
                         </li>
                         <li class="list-inline-item mr-3">
@@ -226,7 +242,7 @@
         </div>
     </footer>
 
-    <!-- Bootstrap core JavaScript -->
+
     <script src="~/lib/template/landing-page/vendor/jquery/jquery.min.js"></script>
     <script src="~/lib/template/landing-page/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
