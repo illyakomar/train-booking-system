@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace train_booking.Models
 {
@@ -16,6 +13,5 @@ namespace train_booking.Models
 
         public virtual User User { get; set; }
         public virtual Train Train { get; set; }
-
     }
 }

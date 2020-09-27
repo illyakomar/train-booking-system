@@ -14,8 +14,9 @@ namespace train_booking.Models
         public string TypeWagon { get; set; }
         public int WagonsCount { get; set; }
         public int PlaceCount { get; set; }
+        public int RouteId { get; set; }
 
-        public virtual ICollection<Route> Routes { get; set; }
+        public virtual Route Route { get; set; }
         public virtual TrainDriver TrainDriver { get; set; }
     }
 }
