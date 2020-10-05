@@ -10,6 +10,7 @@ using train_booking.Models;
 using Microsoft.EntityFrameworkCore; 
 using Microsoft.Extensions.Hosting;
 using train_booking.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace train_booking
 {
@@ -28,6 +29,16 @@ namespace train_booking
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<TrainBookingContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 7;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+            })
+            .AddEntityFrameworkStores<TrainBookingContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

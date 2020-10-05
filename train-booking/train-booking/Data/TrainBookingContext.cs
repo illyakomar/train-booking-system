@@ -4,11 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using train_booking.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace train_booking.Data
 {
-    public class TrainBookingContext : DbContext
+    public class TrainBookingContext : IdentityDbContext<User>
     {
+        public TrainBookingContext(DbContextOptions<TrainBookingContext> options)
+            : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
         public DbSet<User> User { get; set; }
         public DbSet<Train> Train { get; set; }
         public DbSet<TrainDriver> TrainDriver { get; set; }
@@ -17,11 +24,10 @@ namespace train_booking.Data
         public DbSet<Dispatcher> Dispatcher { get; set; }
         public DbSet<Chat> Chat { get; set; }
 
-
-        public TrainBookingContext(DbContextOptions<TrainBookingContext> options)
-            : base(options)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Database.EnsureCreated();
+            base.OnModelCreating(modelBuilder);
         }
+
     }
 }
