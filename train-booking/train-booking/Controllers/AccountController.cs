@@ -64,8 +64,8 @@ namespace train_booking.Controllers
                     await _userRepository.GetUserByLogin(model.Email);
                     return RedirectToAction("Index", "Profile");
                 }
+                ModelState.AddModelError("", "Неправильний логін або пароль");
             }
-            ModelState.AddModelError("", "Неправильний логін або пароль");
             return View(model);
         }
 

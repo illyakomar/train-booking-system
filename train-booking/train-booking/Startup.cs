@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using train_booking.Data;
 using Microsoft.AspNetCore.Identity;
+using train_booking.Services.Interfaces;
+using train_booking.Services.Repositories;
+using train_booking.Services;
 
 namespace train_booking
 {
@@ -39,6 +42,10 @@ namespace train_booking
                 options.Password.RequireLowercase = false;
             })
             .AddEntityFrameworkStores<TrainBookingContext>();
+
+
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
