@@ -17,7 +17,7 @@ namespace train_booking.Services
 {
     public class EmailSender : IEmailSender
     {
-        private IWebHostEnvironment _environment;
+        private IHostingEnvironment _environment;
         private IHttpContextAccessor _httpContextAccessor;
 
         private string _title;
@@ -26,7 +26,7 @@ namespace train_booking.Services
         private string _host;
         private int _port;
 
-        public EmailSender(IConfiguration configuration, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public EmailSender(IConfiguration configuration, IHostingEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _environment = environment;
             _httpContextAccessor = httpContextAccessor;
@@ -40,14 +40,20 @@ namespace train_booking.Services
             _port = mail.GetValue<int>("Port");
         }
 
-        public async Task SendEmailAsync(string email, string subject, string username, string message)
+        public async Task SendDefaultEmailAsync(string email, string subject, string message, string buttonLink, string buttonText)
         {
-            MimeMessage emailMessage = CreateMimeMessage(email, subject, username, message);
+            await SendEmailAsync(email, subject, CreateDeafaulHtmlBody(message, buttonLink, buttonText));
+        }
+
+        private async Task SendEmailAsync(string email, string subject, string htmlBody)
+        {
+            MimeMessage emailMessage = CreateMimeMessage(email, subject, htmlBody);
 
             using (var client = new SmtpClient())
             {
                 try
                 {
+                    // during development
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
 
@@ -61,22 +67,22 @@ namespace train_booking.Services
             }
         }
 
-        private MimeMessage CreateMimeMessage(string email, string subject, string username, string message)
+        private MimeMessage CreateMimeMessage(string email, string subject, string htmlBody)
         {
             MimeMessage emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(_title, _email));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = CreatePasswordRecoveryHtmlBody(username, message) };
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlBody };
 
             return emailMessage;
         }
 
-        private string CreatePasswordRecoveryHtmlBody(string username, string recoveryCode)
+        private string CreateDeafaulHtmlBody(string message, string buttonLink, string buttonText)
         {
             string body = "";
             var webRoot = _environment.WebRootPath;
-            var htmlFile = Path.Combine(webRoot, "lib", "email-templates", "email-recovery-code-template.html");
+            var htmlFile = Path.Combine(webRoot, "lib", "template", "email-letter-template.html");
 
             using (StreamReader reader = new StreamReader(htmlFile))
             {
@@ -85,11 +91,13 @@ namespace train_booking.Services
 
             string domainUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.ToString()}";
 
-            body = body.Replace("{username}", username);
-            body = body.Replace("{recovery-code}", recoveryCode);
+            body = body.Replace("{CONTENT}", message);
             body = body.Replace("{domain-url}", domainUrl);
+            body = body.Replace("{button-link}", buttonLink);
+            body = body.Replace("{button-text}", buttonText);
 
             return body;
         }
+
     }
 }

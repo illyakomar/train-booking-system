@@ -1,0 +1,62 @@
+﻿@model train_booking.ViewModels.Account.RegisterViewModel
+
+<form class="tab-pane fade" id="panel8" role="tabpanel" method="post" asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="modal-body">
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" class="form-control form-control-md" id="Email" placeholder="Email">
+                <span class="small" asp-validation-for="Email"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="LastName">Прізвище</label>
+                <input asp-for="LastName" type="text" class="form-control form-control-md" id="lastname" placeholder="Прізвище">
+                <span class="small" asp-validation-for="LastName"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="FirstName">Ім'я</label>
+                <input asp-for="FirstName" type="text" class="form-control form-control-md" id="firstname" placeholder="Ім'я">
+                <span class="small" asp-validation-for="FirstName"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="MiddleName">По батькові</label>
+                <input asp-for="MiddleName" type="text" class="form-control form-control-md" id="fathername" placeholder="По батькові">
+                <span class="small" asp-validation-for="MiddleName"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="Passport">Номер паспорта</label>
+                <input asp-for="Passport" type="text" class="form-control form-control-md" id="phonenumber" placeholder="Номер паспорта">
+                <span class="small" asp-validation-for="Passport"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="Password">Пароль</label>
+                <input asp-for="Password" type="password" class="form-control form-control-md" id="password" placeholder="Пароль">
+                <span class="small" asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <div class="md-form form-sm mb-4">
+            <div class="form-group">
+                <label asp-for="PasswordConfirm">Підтвердження паролю</label>
+                <input asp-for="PasswordConfirm" type="password" class="form-control form-control-md" id="confirmpass" placeholder="Підтвердження паролю">
+                <span class="small" asp-validation-for="PasswordConfirm"></span>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3 text-center">
+            <button type="submit" id="register" class="btn btn-primary font-weight-medium auth-form-btn mb-4">Зареєструватися</button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary waves-effect ml-auto" data-dismiss="modal">Закрити</button>
+    </div>
+</form>

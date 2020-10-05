@@ -13,14 +13,14 @@ namespace train_booking.ViewModels.Account
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Поле Пароль є обов'язкове.")]
-        [StringLength(30, MinimumLength = 4, ErrorMessage = "Пароль занаддто короткий")]
+        [StringLength(30, MinimumLength = 4, ErrorMessage = "Пароль занадто короткий")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Поле Підтвердження паролю є обов'язкове.")]
         [Compare("Password", ErrorMessage = "Паролі не збігаються.")]
-        [StringLength(30, MinimumLength = 4, ErrorMessage = "Пароль занад то короткий")]
+        [StringLength(30, MinimumLength = 4, ErrorMessage = "Пароль занадто короткий")]
         [DataType(DataType.Password)]
         [Display(Name = "Підтвердження паролю")]
         public string PasswordConfirm { get; set; }

@@ -37,21 +37,6 @@ namespace train_booking.Controllers
             _emailSender = emailSender;
         }
 
-        [HttpGet]
-        public IActionResult Login(string returnUrl = null, string error = null)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Profile");
-            }
-
-            if (error != null)
-            {
-                ModelState.AddModelError("", error);
-            }
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -61,7 +46,6 @@ namespace train_booking.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    await _userRepository.GetUserByLogin(model.Email);
                     return RedirectToAction("Index", "Profile");
                 }
                 ModelState.AddModelError("", "Неправильний логін або пароль");
@@ -76,17 +60,6 @@ namespace train_booking.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult Register()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Profile");
-            }
-
-            return View();
         }
 
         [HttpPost]
@@ -164,153 +137,134 @@ namespace train_booking.Controllers
                 }
             }
 
-            return View(viewModel);
+            return RedirectToAction("Index", "Home", viewModel);
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+       
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string email)
         {
-            var result = await _userManager.ChangePasswordAsync(await _userManager.GetUserAsync(User), model.OldPassword, model.NewPassword);
+            if (userId == null || code == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
 
             if (result.Succeeded)
             {
-                return RedirectToAction("ResetPasswordSuccess", "Account");
+                await _emailSender.SendDefaultEmailAsync(email, "Реєстрація", $"Аккаунт упішно підтверджений!", $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}/", "Перейти до системи");
             }
 
-            return Problem();
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        [HttpGet]
+        public IActionResult CheckValidationCode(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword(string error = "")
+        {
+            ViewBag.Error = error;
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null)
-                {
-                    if (user.ResetCode == model.Code)
-                    {
-                        var result = await _userManager.RemovePasswordAsync(user);
-
-                        if (result.Succeeded)
-                        {
-                            result = await _userManager.AddPasswordAsync(user, model.NewPassword);
-
-                            if (result.Succeeded)
-                            {
-                                return RedirectToAction("ResetPasswordSuccess", "Account");
-                            }
-                        }
-                    }
-                }
-                else
+                if (user == null)
                 {
                     return RedirectToAction("ForgotPassword", new { error = "Користувач з таким email не знайдений." });
                 }
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code, email = user.Email }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendDefaultEmailAsync(model.Email, "Відновлення паролю", "Щоб відновити пароль перейдіть за посиланням:", callbackUrl, "Відновити!");
+
+                return View("ForgotPasswordSuccess");
             }
 
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RequestResetPassword(SubmitEmailViewModel model)
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string email, string code = null)
         {
-            if (ModelState.IsValid)
+            if (code == null)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null)
-                {
-                    string resetCode = GenerateRandomKey();
-
-                    await _userRepository.AddResetCodeForUser(user, resetCode);
-                    await _emailSender.SendEmailAsync(user.Email, "Відновлення паролю", user.UserName, resetCode);
-
-                    return Ok();
-                }
-
-                return NotFound();
+                return RedirectToAction("ForgotPassword", new { error = "Виникла проблема із посиланням, спробуйте ще раз." });
             }
 
-            return RedirectToAction("ForgotPassword", new { error = "Виникла проблема із посиланням, спробуйте ще раз." });
+            var model = new ResetPasswordViewModel { Code = code, Email = email };
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> VerifyResetCode(VerifyResetCodeViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model, string code = null)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            model.Email = user.Email;
+
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null)
-                {
-                    if (user.ResetCode == model.ResetCode)
-                    {
-                        if (user.LastResetCodeCreationTime.AddMinutes(5) > DateTime.Now)
-                        {
-                            return Ok();
-                        }
-
-                        await _userRepository.ClearResetCodeForUser(user);
-
-                        return Problem("Ваш код вже недійсний");
-                    }
-
-                    return Problem("Ви ввели недійсний код");
-                }
-
-                return NotFound();
+                return View(model);
             }
 
-            return Problem();
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetUserRole()
-        {
-            string roleName = (await _userManager.GetRolesAsync(await _userManager.GetUserAsync(User))).FirstOrDefault();
-
-            if (roleName == null)
+            if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("ForgotPassword", new { error = "Користувач з таким email не знайдений." });
             }
 
-            return Ok(roleName);
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _emailSender.SendDefaultEmailAsync(model.Email, "Відновлення паролю", $"Ви успішно змінили свій пароль!", $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}/", "Перейти до системи");
+                return RedirectToAction("ResetPasswordSuccess", "Account");
+            }
+
+            ViewBag.Errors = result.Errors.Select(x => x.Description).ToList();
+
+            return View(model);
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetAuthorizedUserInfo()
+        public IActionResult ForgotPasswordSuccess()
         {
-            var user = await _userManager.GetUserAsync(User);
-
-            return Json(new UserInfoViewModel { Email = user.Email, Login = user.UserName });
+            return View();
         }
 
         [HttpGet]
-        public IActionResult CheckIfUserAlreadyAuthorized()
+        public IActionResult ResetPasswordSuccess()
         {
-            return Json(User.Identity.IsAuthenticated);
+            return View();
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetUserId()
+        public IActionResult RegisterSuccess()
         {
-            return Json((await _userManager.GetUserAsync(User)).Id);
+            return View();
         }
 
-        private string GenerateRandomKey()
-        {
-            Random random = new Random();
-
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            int length = 8;
-
-            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
     }
 }

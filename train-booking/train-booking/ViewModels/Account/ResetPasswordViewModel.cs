@@ -17,11 +17,6 @@ namespace train_booking.ViewModels.Account
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Новий пароль")]
-        public string NewPassword { get; set; }
-
         [DataType(DataType.Password)]
         [Display(Name = "Підтвердження паролю")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
