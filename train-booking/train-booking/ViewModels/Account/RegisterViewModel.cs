@@ -25,6 +25,7 @@ namespace train_booking.ViewModels.Account
         [Display(Name = "Підтвердження паролю")]
         public string PasswordConfirm { get; set; }
 
+        [Required(ErrorMessage = "Поле Номер паспорту є обов'язкове.")]
         [Display(Name = "Номер паспорту")]
         public string Passport { get; set; }
 
