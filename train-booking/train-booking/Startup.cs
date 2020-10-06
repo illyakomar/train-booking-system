@@ -32,6 +32,7 @@ namespace train_booking
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<TrainBookingContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
+        
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -41,7 +42,8 @@ namespace train_booking
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
             })
-            .AddEntityFrameworkStores<TrainBookingContext>();
+            .AddEntityFrameworkStores<TrainBookingContext>()
+            .AddDefaultTokenProviders();
 
 
             services.AddScoped<IUsersRepository, UsersRepository>();

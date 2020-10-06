@@ -10,16 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using train_booking.Services.Interfaces;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Routing;
 
 namespace train_booking.Controllers
 {
     public class AccountController : Controller
     {
-        private SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-        private IUsersRepository _userRepository;
-        private IEmailSender _emailSender;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUsersRepository _userRepository;
+        private readonly IEmailSender _emailSender;
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly LinkGenerator _urlHelper;
 
         public AccountController
         (
@@ -27,6 +30,8 @@ namespace train_booking.Controllers
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             IUsersRepository userRepository,
+            IHttpContextAccessor httpContext,
+            LinkGenerator urlHelper,
             IEmailSender emailSender
         )
         {
@@ -35,6 +40,8 @@ namespace train_booking.Controllers
             _roleManager = roleManager;
             _userRepository = userRepository;
             _emailSender = emailSender;
+            _httpContext = httpContext;
+            _urlHelper = urlHelper;
         }
 
         [HttpPost]
@@ -114,6 +121,11 @@ namespace train_booking.Controllers
 
                             if (signInUserResult.Succeeded)
                             {
+                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                var callbackUrl = _urlHelper.GetUriByAction(_httpContext.HttpContext, "ConfirmEmail", "Account", new { userId = user.Id, code, email = user.Email });
+
+                                await _emailSender.SendDefaultEmailAsync(user.Email, "Підтвердження аккаунту", $"Перейдіть за посиланням:", callbackUrl, "Активувати!");
+
                                 await _userManager.FindByIdAsync(user.Id);
                                 return RedirectToAction("RegisterSuccess", "Account");
                             }

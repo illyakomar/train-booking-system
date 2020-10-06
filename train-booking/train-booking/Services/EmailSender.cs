@@ -17,7 +17,7 @@ namespace train_booking.Services
 {
     public class EmailSender : IEmailSender
     {
-        private IHostingEnvironment _environment;
+        private IWebHostEnvironment _environment;
         private IHttpContextAccessor _httpContextAccessor;
 
         private string _title;
@@ -26,7 +26,7 @@ namespace train_booking.Services
         private string _host;
         private int _port;
 
-        public EmailSender(IConfiguration configuration, IHostingEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public EmailSender(IConfiguration configuration, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _environment = environment;
             _httpContextAccessor = httpContextAccessor;
