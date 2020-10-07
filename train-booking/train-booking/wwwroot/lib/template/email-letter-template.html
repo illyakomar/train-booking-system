@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Email</title>
+    <title>E-mail Letter</title>
     <style>
       h1,
       h2 {
         padding: 0px;
         margin: 0px;
+      }
+      .contenttext {
+        margin-bottom: 50px;
+        padding: 0px;
+        margin: 0px;
+        font-size: 30px;
       }
       .mainContainer {
         width: 95%;
@@ -52,7 +58,7 @@
       .recoveryCodeContainer {
         margin-bottom: 50px;
         width: 60%;
-        background-color: rgb(71, 91, 207);
+        background-color: rgb(141, 228, 228);
         border-radius: 100px;
       }
       .footer {
@@ -91,13 +97,12 @@
                 <tr>
                   <td align="center">
                     <div style="margin-bottom: 50px">
-                      <h1 style="margin-bottom: 50px">{CONTENT}</h1>
-                      <h2></h2>
+                      <p class="contenttext">{CONTENT}</p>
                     </div>
                     <div class="recoveryCodeContainer">
-                      <p style="font-size: 60px" href="{button-link}">
+                      <a style="font-size: 60px" href="{button-link}">
                         {button-text}
-                      </p>
+                      </a>
                     </div>
                   </td>
                 </tr>
