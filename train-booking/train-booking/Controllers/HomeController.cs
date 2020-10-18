@@ -11,16 +11,39 @@ namespace train_booking.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("CheckerRole", "Home");
+            }
+
             return View();
+        }
+
+        public IActionResult CheckerRole()
+        {
+            if (User.IsInRole("Passenger"))
+            {
+                return RedirectToAction("Passenger", "Profile");
+            }
+
+            if (User.IsInRole("Dispatcher"))
+            {
+                return RedirectToAction("Dispatcher", "Profile");
+            }
+
+            if (User.IsInRole("TrainDriver"))
+            {
+                return RedirectToAction("TrainDriver", "Profile");
+            }
+
+            if (User.IsInRole("Administrator"))
+            {
+                return RedirectToAction("Admin", "Profile");
+            }
+
+            return RedirectToAction("Passenger", "Profile");
         }
 
         public IActionResult Privacy()

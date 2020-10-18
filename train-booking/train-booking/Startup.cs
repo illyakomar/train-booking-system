@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using train_booking.Services.Interfaces;
 using train_booking.Services.Repositories;
 using train_booking.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace train_booking
 {
@@ -29,6 +30,13 @@ namespace train_booking
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<TrainBookingContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
@@ -37,7 +45,7 @@ namespace train_booking
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 7;
+                options.Password.RequiredLength = 4;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
@@ -45,13 +53,14 @@ namespace train_booking
             .AddEntityFrameworkStores<TrainBookingContext>()
             .AddDefaultTokenProviders();
 
-
-            services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IDispatchersRepository, DispatchersRepository>();
+            services.AddScoped<ITrainDriversRepository, TrainDriversRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TrainBookingContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TrainBookingContext context, IServiceProvider serviceProvider)
         {
             context.Database.EnsureCreated();
 
@@ -62,10 +71,17 @@ namespace train_booking
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseHttpsRedirection();
+
+            app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -75,6 +91,85 @@ namespace train_booking
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InitializeIdentity(serviceProvider);
+        }
+
+        private void InitializeIdentity(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            Task<IdentityResult> roleResultAdministrator;
+            Task<IdentityResult> roleResultDispatcher;
+            Task<IdentityResult> roleResultTrainDriver;
+            Task<IdentityResult> roleResultPassenger;
+
+            var admin = Configuration.GetSection("Administrator");
+
+            string adminEmail = admin.GetValue<string>("email");
+            string adminPassword = admin.GetValue<string>("password");
+
+            //Check that there is an Administrator role and create if not
+            Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Administrator");
+            hasAdminRole.Wait();
+
+            if (!hasAdminRole.Result)
+            {
+                roleResultAdministrator = roleManager.CreateAsync(new IdentityRole("Administrator"));
+                roleResultAdministrator.Wait();
+            }
+
+            Task<bool> hasDispatcherRole = roleManager.RoleExistsAsync("Dispatcher");
+            hasDispatcherRole.Wait();
+
+            if (!hasDispatcherRole.Result)
+            {
+                roleResultDispatcher = roleManager.CreateAsync(new IdentityRole("Dispatcher"));
+                roleResultDispatcher.Wait();
+            }
+
+            Task<bool> hasTrainDriverRole = roleManager.RoleExistsAsync("TrainDriver");
+            hasTrainDriverRole.Wait();
+
+            if (!hasTrainDriverRole.Result)
+            {
+                roleResultTrainDriver = roleManager.CreateAsync(new IdentityRole("TrainDriver"));
+                roleResultTrainDriver.Wait();
+            }
+
+            Task<bool> hasPassengerRole = roleManager.RoleExistsAsync("Passenger");
+            hasPassengerRole.Wait();
+
+            if (!hasAdminRole.Result)
+            {
+                roleResultPassenger = roleManager.CreateAsync(new IdentityRole("Passenger"));
+                roleResultPassenger.Wait();
+            }
+
+            //Check if the admin user exists and create it if not
+            //Add to the Administrator role
+
+            Task<User> adminUser = userManager.FindByEmailAsync(adminEmail);
+            adminUser.Wait();
+
+            if (adminUser.Result == null)
+            {
+                User administrator = new User
+                {
+                    Email = adminEmail,
+                    UserName = adminEmail
+                };
+
+                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, adminPassword);
+                newUser.Wait();
+
+                if (newUser.Result.Succeeded)
+                {
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(administrator, "Administrator");
+                    newUserRole.Wait();
+                }
+            }
         }
     }
 }

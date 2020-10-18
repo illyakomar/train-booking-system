@@ -53,11 +53,11 @@ namespace train_booking.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Profile");
+                    return RedirectToAction("CheckerRole", "Home");
                 }
                 ModelState.AddModelError("", "Неправильний логін або пароль");
             }
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -94,6 +94,7 @@ namespace train_booking.Controllers
                         {
                             await _roleManager.CreateAsync(new IdentityRole("Administrator"));
                             await _roleManager.CreateAsync(new IdentityRole("Dispatcher"));
+                            await _roleManager.CreateAsync(new IdentityRole("TrainDriver"));
                             await _roleManager.CreateAsync(new IdentityRole("Passenger"));
                         }
 
@@ -104,6 +105,10 @@ namespace train_booking.Controllers
                         else if (viewModel.Role == "Dispatcher" && User.IsInRole("Administrator"))
                         {
                             await _userManager.AddToRoleAsync(user, "Dispatcher");
+                        }
+                        else if (viewModel.Role == "TrainDriver" && User.IsInRole("Administrator"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "TrainDriver");
                         }
                         else
                         {
