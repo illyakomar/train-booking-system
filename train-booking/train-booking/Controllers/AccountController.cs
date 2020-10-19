@@ -90,54 +90,24 @@ namespace train_booking.Controllers
 
                     if (createUserResult.Succeeded)
                     {
-                        if (!await _roleManager.RoleExistsAsync("Passenger"))
-                        {
-                            await _roleManager.CreateAsync(new IdentityRole("Administrator"));
-                            await _roleManager.CreateAsync(new IdentityRole("Dispatcher"));
-                            await _roleManager.CreateAsync(new IdentityRole("TrainDriver"));
-                            await _roleManager.CreateAsync(new IdentityRole("Passenger"));
-                        }
-
-                        if (viewModel.Role == "Administrator")
-                        {
-                            await _userManager.AddToRoleAsync(user, "Administrator");
-                        }
-                        else if (viewModel.Role == "Dispatcher" && User.IsInRole("Administrator"))
-                        {
-                            await _userManager.AddToRoleAsync(user, "Dispatcher");
-                        }
-                        else if (viewModel.Role == "TrainDriver" && User.IsInRole("Administrator"))
-                        {
-                            await _userManager.AddToRoleAsync(user, "TrainDriver");
-                        }
-                        else
-                        {
-                            await _userManager.AddToRoleAsync(user, "Passenger");
-                        }
+                        await _userManager.AddToRoleAsync(user, "Passenger");
 
                         if (!string.IsNullOrWhiteSpace(user.Email))
                         {
                             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
                         }
 
-                        if (!User.IsInRole("Administrator"))
+                        var signInUserResult = await _signInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, true, false);
+
+                        if (signInUserResult.Succeeded)
                         {
-                            var signInUserResult = await _signInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, true, false);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var callbackUrl = _urlHelper.GetUriByAction(_httpContext.HttpContext, "ConfirmEmail", "Account", new { userId = user.Id, code, email = user.Email });
 
-                            if (signInUserResult.Succeeded)
-                            {
-                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                                var callbackUrl = _urlHelper.GetUriByAction(_httpContext.HttpContext, "ConfirmEmail", "Account", new { userId = user.Id, code, email = user.Email });
+                            await _emailSender.SendDefaultEmailAsync(user.Email, "Підтвердження аккаунту", $"Перейдіть за посиланням:", callbackUrl, "Активувати!");
 
-                                await _emailSender.SendDefaultEmailAsync(user.Email, "Підтвердження аккаунту", $"Перейдіть за посиланням:", callbackUrl, "Активувати!");
-
-                                await _userManager.FindByIdAsync(user.Id);
-                                return RedirectToAction("RegisterSuccess", "Account");
-                            }
-                        }
-                        else
-                        {
-                            return Ok();
+                            await _userManager.FindByIdAsync(user.Id);
+                            return RedirectToAction("RegisterSuccess", "Account");
                         }
                     }
                     else

@@ -11,8 +11,8 @@ namespace train_booking.Services.Interfaces
 {
     public interface IUsersRepository
     {
-        Task<bool> RegisterDispatcher(UserViewModel user, DispatcherViewModel model);
-        Task<bool> RegisterTrainDriver(UserViewModel user, TrainDriverViewModel model);
+        Task<bool> RegisterDispatcher(DispatcherViewModel model);
+        Task<bool> RegisterTrainDriver(TrainDriverViewModel model);
         Task<bool> Update(UserViewModel model);
         Task<bool> IsEmailUnique(string email);
         Task<string> GetUserEmailById(string id);

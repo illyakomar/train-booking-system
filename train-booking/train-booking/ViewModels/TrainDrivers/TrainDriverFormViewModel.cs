@@ -53,6 +53,6 @@ namespace train_booking.ViewModels.TrainDrivers
         [Display(Name = "Номер прав")]
         public int CertificateNumber { get; set; }
 
-        public int TrainDriverId { get; internal set; }
+        public int TrainDriverId { get; set; }
     }
 }

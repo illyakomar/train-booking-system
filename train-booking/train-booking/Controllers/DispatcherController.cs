@@ -10,6 +10,9 @@ using train_booking.Data;
 using train_booking.Services.Interfaces;
 using train_booking.ViewModels.Dispatchers;
 using train_booking.ViewModels.Account;
+using train_booking.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace train_booking.Controllers
 {
@@ -19,12 +22,26 @@ namespace train_booking.Controllers
         private readonly IUsersRepository _usersRepository;
         private readonly IDispatchersRepository _dispatchersRepository;
         private readonly TrainBookingContext _context;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public DispatcherController(IUsersRepository usersRepository, IDispatchersRepository dispatchersRepository, TrainBookingContext context)
+        public DispatcherController
+        (
+            IUsersRepository usersRepository,
+            TrainBookingContext context,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IDispatchersRepository dispatchersRepository
+        )
         {
             _usersRepository = usersRepository;
-            _dispatchersRepository = dispatchersRepository;
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            _dispatchersRepository = dispatchersRepository;
         }
 
         [Authorize(Roles = "Administrator")]
@@ -47,42 +64,58 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Create(DispatcherFormViewModel model)
+        public async Task<IActionResult> Create(DispatcherFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                try
+                if (await _usersRepository.IsEmailUnique(viewModel.Email))
                 {
-                    await _usersRepository.RegisterDispatcher(
-                          new UserViewModel
-                          {
-                              Email = model.Email,
-                              FirstName = model.FirstName,
-                              LastName = model.LastName,
-                              MiddleName = model.MiddleName,
-                              Password = model.Password,
-                              Passport = model.Passport,
-                              UserName = model.Email
-                          },
-                          new DispatcherViewModel
-                          {
-                              BirthDate = model.BirthDate,
-                              Address = model.Address
-                          }
-                      );
+                    User user = new User
+                    {
+                        Email = viewModel.Email,
+                        UserName = viewModel.Email,
+                        LastName = viewModel.LastName,
+                        FirstName = viewModel.FirstName,
+                        MiddleName = viewModel.MiddleName,
+                        Passport = viewModel.Passport
+                    };
 
+                    var createUserResult = await _userManager.CreateAsync(user, viewModel.Password);
+
+                    if (createUserResult.Succeeded)
+                    {
+                        DispatcherViewModel trainDriverViewModel = new DispatcherViewModel
+                        {
+                            UserId = user.Id,
+                            Address = viewModel.Address,
+                            BirthDate = viewModel.BirthDate
+                        };
+
+                        await _userManager.AddToRoleAsync(user, "Dispatcher");
+                        await _usersRepository.RegisterDispatcher(trainDriverViewModel);
+
+                        if (!string.IsNullOrWhiteSpace(user.Email))
+                        {
+                            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        foreach (var error in createUserResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
-                catch
+                else
                 {
-                    ModelState.AddModelError("Email", "Ця електронна адреса вже зайнята!");
-                    return View(model);
+                    ModelState.AddModelError("", "Ця пошта вже зареєстрована");
                 }
-
-
-                return RedirectToAction("Index", "Dispatcher", new { message = "Диспетчер успішно доданий!" });
             }
 
-            return View(model);
+            return RedirectToAction("Create", "Dispatcher", viewModel);
         }
 
         [HttpGet]
@@ -103,7 +136,7 @@ namespace train_booking.Controllers
                 LastName = dispatcher.User.LastName,
                 FirstName = dispatcher.User.FirstName,
                 MiddleName = dispatcher.User.MiddleName,
-                Passport = dispatcher.User.PhoneNumber,
+                Passport = dispatcher.User.Passport,
                 BirthDate = dispatcher.BirthDate,
                 Address = dispatcher.Address,
                 Email = dispatcher.User.Email
@@ -115,11 +148,11 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Dispatcher")]
-        public async Task<IActionResult> Edit(DispatcherFormViewModel model, int DispatcherId = -1)
+        public async Task<IActionResult> Edit(DispatcherFormViewModel model)
         {
-            if (ModelState.IsValid || ModelState.ErrorCount == 2)
+            if (ModelState.ErrorCount == 2)
             {
-                var resU = await _usersRepository.Update(new UserViewModel
+                var DispatcherU = await _usersRepository.Update(new UserViewModel
                 {
                     Email = model.Email,
                     Passport = model.Passport,
@@ -127,9 +160,9 @@ namespace train_booking.Controllers
                     LastName = model.LastName,
                     MiddleName = model.MiddleName
                 });
-                var resS = await _dispatchersRepository.Update(DispatcherId, model);
+                var DispatchS = await _dispatchersRepository.Update(model.DispatcherId, model);
 
-                if (resU && resS)
+                if (DispatcherU && DispatchS)
                 {
                     if (User.IsInRole("Dispatcher"))
                     {
@@ -138,7 +171,7 @@ namespace train_booking.Controllers
 
                     return RedirectToAction("Index", "Dispatcher", new { message = "Диспетчер успішно відредагований!" });
                 }
-                else if (!resU && !resS)
+                else if (!DispatcherU && !DispatchS)
                 {
                     return RedirectToAction("Index", "Dispatcher", new { error = "Сталася невідома помилка при редагуванні диспетчера!" });
                 }

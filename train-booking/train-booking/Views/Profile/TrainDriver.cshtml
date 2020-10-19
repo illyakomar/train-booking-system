@@ -1,4 +1,4 @@
-﻿@model train_booking.Models.TrainDriver
+﻿@model train_booking.ViewModels.TrainDrivers.TrainDriverViewModel
 
 
 @{
@@ -10,13 +10,35 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="font-weight-bold mb-0">
-                    Вітаємо,! Ми раді Вас бачити!
+                    Вітаємо, Машиніст ! Ми раді Вас бачити!
                 </h4>
             </div>
             <div>
-                <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
-                    <i class="ti-clipboard btn-icon-prepend"></i>Report
-                </button>
+                <form method="get" asp-controller="TrainDriver" asp-action="Setting" asp-route-id="@Model.UserId">
+                    <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
+                        <i class="ti-settings btn-icon-prepend"></i>Налаштування
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title">Машиніст: <span>@Model.User.LastName @Model.User.FirstName @Model.User.MiddleName</span></p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-3">Email: <span class="font-weight-bold">@Model.User.Email</span></p>
+                        <p class="mb-3">Прізвище: <span class="font-weight-bold">@Model.User.LastName</span></p>
+                        <p class="mb-3">Імя: <span class="font-weight-bold">@Model.User.FirstName</span></p>
+                        <p class="mb-3">По батькові: <span class="font-weight-bold">@Model.User.MiddleName</span></p>
+                        <p class="mb-3">Медична книга: <span class="font-weight-bold">@Model.HealthStatus</span></p>
+                        <p class="mb-3">Дата народження: <span class="font-weight-bold">@Model.BirthDate</span></p>
+                        <p class="mb-3">Номер сертифікату: <span class="font-weight-bold">@Model.CertificateNumber</span></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

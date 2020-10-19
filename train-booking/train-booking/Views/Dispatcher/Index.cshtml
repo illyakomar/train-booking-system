@@ -1,5 +1,4 @@
-﻿@using train_booking.ViewModels.Dispatchers;
-@model IEnumerable<DispatcherViewModel>
+﻿@model List<Dispatcher>
 @{
     ViewData["Title"] = "Диспетчер";
 }
@@ -21,12 +20,10 @@
 
 <div class="card">
     <div class="card-body">
-        <a type="submit" class="btn btn-inverse-primary btn-sm d-flex align-items-center float-right" asp-controller="Dispatcher" asp-action="Create">
-            <i class="mdi mdi-plus-circle"></i> <span class="ml-2">Додати</span>
+        <a type="submit" class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-controller="Dispatcher" asp-action="Create">
+            <i class="ti-plus"></i>
         </a>
-        <h5 class="card-title"><a>Усі диспетчери</a></h5>
-
-        <p class="card-text">Усього в системі зареєстрованно @Model.Count()</p>
+        <h5 class="card-title"><a>Диспетчери</a></h5>
         <div class="table-responsive">
             <table class="table table-hover datatable-table">
                 <thead class="text-center">
@@ -48,13 +45,13 @@
                             <td class="text-left">@item.User.Passport</td>
                             <td class="text-center">
                                 <form class="d-inline" method="get" asp-action="Edit" asp-route-id="@item.UserId">
-                                    <button type="submit" href="@Url.Action("Edit", "Dispatcher", new { id = item.UserId })" class="btn btn-inverse-info btn-icon align-items-center" data-toggle="tooltip" title="Редагувати диспетчера">
-                                        <i class="mdi mdi-lead-pencil"></i>
+                                    <button type="submit" href="@Url.Action("Edit", "Dispatcher", new { id = item.UserId })" class="btn btn-inverse-warning btn-rounded btn-icon" data-toggle="tooltip" title="Редагувати диспетчера">
+                                        <i class="ti-pencil-alt2"></i>
                                     </button>
                                 </form>
                                 <form class="d-inline" method="post" asp-action="Delete" asp-route-id="@item.DispatcherId">
-                                    <button type="submit" class="btn btn-inverse-danger btn-icon" data-toggle="tooltip" title="Видалити диспетчера">
-                                        <i class="mdi mdi-delete-variant"></i>
+                                    <button type="submit" class="btn btn-inverse-danger btn-rounded btn-icon" data-toggle="tooltip" title="Видалити диспетчера">
+                                        <i class="ti-trash"></i>
                                     </button>
                                 </form>
                             </td>

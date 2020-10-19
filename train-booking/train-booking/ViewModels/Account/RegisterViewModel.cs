@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using train_booking.ViewModels.Dispatchers;
+using train_booking.ViewModels.TrainDrivers;
 
 namespace train_booking.ViewModels.Account
 {
@@ -40,6 +42,10 @@ namespace train_booking.ViewModels.Account
         [Required(ErrorMessage = "Поле По батькові є обов'язкове.")]
         [Display(Name = "По батькові")]
         public string MiddleName { get; set; }
+
+        public TrainDriverViewModel trainDriverViewModel {get;set;}
+
+        public DispatcherViewModel dispatcherViewModel { get; set; }
 
         public string Role { get; set; }
 

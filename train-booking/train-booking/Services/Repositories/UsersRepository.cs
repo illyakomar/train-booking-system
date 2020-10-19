@@ -24,36 +24,31 @@ namespace train_booking.Services.Repositories
             _userManager = userManager;
         }
 
-        public async Task<bool> RegisterDispatcher(UserViewModel user, DispatcherViewModel model)
+        public async Task<bool> RegisterDispatcher(DispatcherViewModel model)
         {
-           // await RegisterUser(user, "Dispatcher");
-
-            var userFromDb = _context.User.Where(x => x.Email == user.Email).FirstOrDefault();
+            var userFromDb = _context.User.Where(user => user.Id == model.UserId).FirstOrDefault();
 
             _context.Dispatcher.Add(new Dispatcher
             {
+                UserId = model.UserId,
                 User = userFromDb,
                 BirthDate = model.BirthDate,
                 Address = model.Address
-     
             });
 
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> RegisterTrainDriver(UserViewModel user, TrainDriverViewModel model)
+        public async Task<bool> RegisterTrainDriver(TrainDriverViewModel model)
         {
-          //  await RegisterUser(user, "TrainDriver");
-
-            var userFromDb = _context.User.Where(x => x.Email == user.Email).FirstOrDefault();
+            var userFromDb = _context.User.Where(user => user.Id == model.UserId).FirstOrDefault();
 
             _context.TrainDriver.Add(new TrainDriver
             {
-                User = userFromDb,
+                UserId = model.UserId,
                 BirthDate = model.BirthDate,
                 HealthStatus = model.HealthStatus,
                 CertificateNumber = model.CertificateNumber
-
             });
 
             return await _context.SaveChangesAsync() > 0;

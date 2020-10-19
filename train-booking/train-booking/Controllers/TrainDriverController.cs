@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using train_booking.Data;
+using train_booking.Models;
 using train_booking.Services.Interfaces;
 using train_booking.ViewModels.Account;
 using train_booking.ViewModels.TrainDrivers;
@@ -15,15 +18,29 @@ namespace train_booking.Controllers
 {
     public class TrainDriverController : Controller
     {
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUsersRepository _usersRepository;
         private readonly ITrainDriversRepository _trainDriversRepository;
         private readonly TrainBookingContext _context;
 
-        public TrainDriverController(IUsersRepository usersRepository, ITrainDriversRepository trainDriversRepository, TrainBookingContext context)
+        public TrainDriverController
+        (
+            IUsersRepository usersRepository,
+            ITrainDriversRepository trainDriversRepository,
+            TrainBookingContext context,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager
+        )
         {
             _usersRepository = usersRepository;
             _trainDriversRepository = trainDriversRepository;
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         [Authorize(Roles = "Administrator")]
@@ -46,43 +63,59 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Create(TrainDriverFormViewModel model)
+        public async Task<IActionResult> Create(TrainDriverFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                try
+                if (await _usersRepository.IsEmailUnique(viewModel.Email))
                 {
-                    await _usersRepository.RegisterTrainDriver(
-                          new UserViewModel
-                          {
-                              Email = model.Email,
-                              FirstName = model.FirstName,
-                              LastName = model.LastName,
-                              MiddleName = model.MiddleName,
-                              Password = model.Password,
-                              Passport = model.Passport,
-                              UserName = model.Email
-                          },
-                          new TrainDriverViewModel
-                          {
-                              BirthDate = model.BirthDate,
-                              HealthStatus = model.HealthStatus,
-                              CertificateNumber = model.CertificateNumber
-                          }
-                      );
+                    User user = new User
+                    {
+                        Email = viewModel.Email,
+                        UserName = viewModel.Email,
+                        LastName = viewModel.LastName,
+                        FirstName = viewModel.FirstName,
+                        MiddleName = viewModel.MiddleName,
+                        Passport = viewModel.Passport
+                    };
 
+                    var createUserResult = await _userManager.CreateAsync(user, viewModel.Password);
+
+                    if (createUserResult.Succeeded)
+                    {
+                        TrainDriverViewModel trainDriverViewModel = new TrainDriverViewModel
+                        {
+                            BirthDate = viewModel.BirthDate,
+                            CertificateNumber = viewModel.CertificateNumber,
+                            HealthStatus = viewModel.HealthStatus,
+                            UserId = user.Id
+                        };
+
+                        await _userManager.AddToRoleAsync(user, "TrainDriver");
+                        await _usersRepository.RegisterTrainDriver(trainDriverViewModel);
+
+                        if (!string.IsNullOrWhiteSpace(user.Email))
+                        {
+                            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        foreach (var error in createUserResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
-                catch
+                else
                 {
-                    ModelState.AddModelError("Email", "Ця електронна адреса вже зайнята!");
-                    return View(model);
+                    ModelState.AddModelError("", "Ця пошта вже зареєстрована");
                 }
-
-
-                return RedirectToAction("Index", "TrainDriver", new { message = "Машиніст успішно доданий!" });
             }
 
-            return View(model);
+            return RedirectToAction("Create", "TrainDriver", viewModel);
         }
 
         [HttpGet]
@@ -103,7 +136,7 @@ namespace train_booking.Controllers
                 LastName = trainDriver.User.LastName,
                 FirstName = trainDriver.User.FirstName,
                 MiddleName = trainDriver.User.MiddleName,
-                Passport = trainDriver.User.PhoneNumber,
+                Passport = trainDriver.User.Passport,
                 BirthDate = trainDriver.BirthDate,
                 HealthStatus = trainDriver.HealthStatus,
                 CertificateNumber = trainDriver.CertificateNumber,
@@ -116,11 +149,11 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, TrainDriver")]
-        public async Task<IActionResult> Edit(TrainDriverFormViewModel model, int TrainDriverId = -1)
+        public async Task<IActionResult> Edit(TrainDriverFormViewModel model)
         {
-            if (ModelState.IsValid || ModelState.ErrorCount == 2)
+            if (ModelState.ErrorCount == 2)
             {
-                var resU = await _usersRepository.Update(new UserViewModel
+                var trainU = await _usersRepository.Update(new UserViewModel
                 {
                     Email = model.Email,
                     Passport = model.Passport,
@@ -128,9 +161,9 @@ namespace train_booking.Controllers
                     LastName = model.LastName,
                     MiddleName = model.MiddleName
                 });
-                var resS = await _trainDriversRepository.Update(TrainDriverId, model);
+                var trainS = await _trainDriversRepository.Update(model.TrainDriverId, model);
 
-                if (resU && resS)
+                if (trainU && trainS)
                 {
                     if (User.IsInRole("TrainDriver"))
                     {
@@ -139,7 +172,7 @@ namespace train_booking.Controllers
 
                     return RedirectToAction("Index", "TrainDriver", new { message = "Машиніст успішно відредагований!" });
                 }
-                else if (!resU && !resS)
+                else if (!trainU && !trainS)
                 {
                     return RedirectToAction("Index", "TrainDriver", new { error = "Сталася невідома помилка при редагуванні машиніста!" });
                 }
