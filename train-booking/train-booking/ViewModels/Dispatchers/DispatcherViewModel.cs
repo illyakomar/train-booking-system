@@ -9,7 +9,7 @@ namespace train_booking.ViewModels.Dispatchers
 {
     public class DispatcherViewModel
     {
-        public int Id { get; set; }
+        public int DispatcherId { get; set; }
         public string UserId { get; set; }
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
@@ -20,7 +20,7 @@ namespace train_booking.ViewModels.Dispatchers
 
         public DispatcherViewModel(Dispatcher dispatcher)
         {
-            Id = dispatcher.Id;
+            DispatcherId = dispatcher.DispatcherId;
             UserId = dispatcher.UserId;
             BirthDate = dispatcher.BirthDate;
             Address = dispatcher.Address;

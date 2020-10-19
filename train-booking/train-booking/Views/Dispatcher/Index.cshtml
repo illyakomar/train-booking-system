@@ -1,0 +1,67 @@
+﻿@using train_booking.ViewModels.Dispatchers;
+@model IEnumerable<DispatcherViewModel>
+@{
+    ViewData["Title"] = "Диспетчер";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Error
+    </div>
+}
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Message
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <a type="submit" class="btn btn-inverse-primary btn-sm d-flex align-items-center float-right" asp-controller="Dispatcher" asp-action="Create">
+            <i class="mdi mdi-plus-circle"></i> <span class="ml-2">Додати</span>
+        </a>
+        <h5 class="card-title"><a>Усі диспетчери</a></h5>
+
+        <p class="card-text">Усього в системі зареєстрованно @Model.Count()</p>
+        <div class="table-responsive">
+            <table class="table table-hover datatable-table">
+                <thead class="text-center">
+                    <tr>
+                        <th class="visible text-left">Ім'я диспетчера</th>
+                        <th class="visible text-left">Email</th>
+                        <th class="visible text-left">Адреса</th>
+                        <th class="visible text-left">Номер паспорту</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-left">@item.User.LastName @item.User.FirstName @item.User.MiddleName</td>
+                            <td class="text-left">@item.User.Email</td>
+                            <td class="text-left">@item.Address</td>
+                            <td class="text-left">@item.User.Passport</td>
+                            <td class="text-center">
+                                <form class="d-inline" method="get" asp-action="Edit" asp-route-id="@item.UserId">
+                                    <button type="submit" href="@Url.Action("Edit", "Dispatcher", new { id = item.UserId })" class="btn btn-inverse-info btn-icon align-items-center" data-toggle="tooltip" title="Редагувати диспетчера">
+                                        <i class="mdi mdi-lead-pencil"></i>
+                                    </button>
+                                </form>
+                                <form class="d-inline" method="post" asp-action="Delete" asp-route-id="@item.DispatcherId">
+                                    <button type="submit" class="btn btn-inverse-danger btn-icon" data-toggle="tooltip" title="Видалити диспетчера">
+                                        <i class="mdi mdi-delete-variant"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

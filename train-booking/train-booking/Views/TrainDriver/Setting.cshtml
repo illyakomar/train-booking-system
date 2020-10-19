@@ -1,0 +1,94 @@
+﻿@model train_booking.ViewModels.TrainDrivers.TrainDriverFormViewModel
+@{
+    ViewData["Title"] = "Налаштування";
+}
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <h4 class="card-title">Налаштування</h4>
+                </div>
+                <form class="form-sample" method="post" asp-controller="TrainDriver" asp-action="Edit">
+                    @Html.HiddenFor(x => x.TrainDriverId)
+                    @Html.HiddenFor(x => x.Email)
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <p class="card-description">
+                        Особиста інформація:
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="LastName" class="col-sm-3 col-form-label">Прізвище:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="LastName" type="text" class="form-control" />
+                                    <span class="small" asp-validation-for="LastName"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="FirstName" class="col-sm-3 col-form-label">Ім'я:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="FirstName" type="text" class="form-control" />
+                                    <span class="small" asp-validation-for="FirstName"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="MiddleName" class="col-sm-3 col-form-label">По батькові:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="MiddleName" type="text" class="form-control" />
+                                    <span class="small" asp-validation-for="MiddleName"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="Passport" class="col-sm-3 col-form-label">Номер паспорту:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Passport" type="text" class="form-control" />
+                                    <span class="small" asp-validation-for="Passport"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="HealthStatus" class="col-sm-3 col-form-label">Медична книга:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="HealthStatus" type="text" class="form-control" />
+                                    <span class="small" asp-validation-for="HealthStatus"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="CertificateNumber" class="col-sm-3 col-form-label">Номер сертифікату:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="CertificateNumber" type="number" class="form-control" />
+                                    <span class="small" asp-validation-for="CertificateNumber"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="BirthDate" class="col-sm-3 col-form-label">Дата народження:</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="BirthDate" type="date" class="form-control" />
+                                    <span class="small" asp-validation-for="BirthDate"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2 mt-5">Зберегти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

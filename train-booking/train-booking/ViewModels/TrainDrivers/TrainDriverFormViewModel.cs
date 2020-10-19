@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace train_booking.ViewModels.Dispatchers
+namespace train_booking.ViewModels.TrainDrivers
 {
-    public class DispatcherFormViewModel
+    public class TrainDriverFormViewModel
     {
         public string Id { get; set; }
 
@@ -45,11 +45,14 @@ namespace train_booking.ViewModels.Dispatchers
         [Display(Name = "День народження")]
         public DateTime BirthDate { get; set; }
 
-        [Required(ErrorMessage = "Поле Адреса обов'язкове.")]
-        [Display(Name = "Адреса")]
-        public string Address { get; set; }
+        [Required(ErrorMessage = "Поле Медична книжка обов'язкове.")]
+        [Display(Name = "Медична книжка")]
+        public string HealthStatus { get; set; }
 
-        public int DispatcherId { get; internal set; }
+        [Required(ErrorMessage = "Поле Номер прав обов'язкове.")]
+        [Display(Name = "Номер прав")]
+        public int CertificateNumber { get; set; }
 
+        public int TrainDriverId { get; internal set; }
     }
 }

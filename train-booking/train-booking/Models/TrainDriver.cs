@@ -4,7 +4,7 @@ namespace train_booking.Models
 {
     public class TrainDriver
     {
-        public int Id { get; set; }
+        public int TrainDriverId { get; set; }
         public string UserId { get; set; }
         public string TrainId { get; set; }
         public DateTime BirthDate { get; set; }

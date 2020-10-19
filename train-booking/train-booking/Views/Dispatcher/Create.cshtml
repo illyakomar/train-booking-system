@@ -1,0 +1,23 @@
+﻿@model train_booking.ViewModels.Dispatchers.DispatcherFormViewModel
+
+@{
+    ViewData["Title"] = "Додавання диспетчера";
+
+    ViewData["Action"] = "Create";
+}
+
+
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Форма диспетчера</h4>
+                @await Html.PartialAsync("_DispatcherForm", Model, ViewData)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/validationWarning.js"></script>
+}

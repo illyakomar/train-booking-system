@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using train_booking.Data;
 using train_booking.Models;
 using train_booking.Services.Interfaces;
+using train_booking.ViewModels.Account;
+using train_booking.ViewModels.Dispatchers;
+using train_booking.ViewModels.TrainDrivers;
 
 namespace train_booking.Services.Repositories
 {
@@ -21,7 +24,60 @@ namespace train_booking.Services.Repositories
             _userManager = userManager;
         }
 
-        
+        public async Task<bool> RegisterDispatcher(UserViewModel user, DispatcherViewModel model)
+        {
+           // await RegisterUser(user, "Dispatcher");
+
+            var userFromDb = _context.User.Where(x => x.Email == user.Email).FirstOrDefault();
+
+            _context.Dispatcher.Add(new Dispatcher
+            {
+                User = userFromDb,
+                BirthDate = model.BirthDate,
+                Address = model.Address
+     
+            });
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> RegisterTrainDriver(UserViewModel user, TrainDriverViewModel model)
+        {
+          //  await RegisterUser(user, "TrainDriver");
+
+            var userFromDb = _context.User.Where(x => x.Email == user.Email).FirstOrDefault();
+
+            _context.TrainDriver.Add(new TrainDriver
+            {
+                User = userFromDb,
+                BirthDate = model.BirthDate,
+                HealthStatus = model.HealthStatus,
+                CertificateNumber = model.CertificateNumber
+
+            });
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> Update(UserViewModel model)
+        {
+            var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
+
+            if (user != null)
+            {
+                user.LastName = model.LastName;
+                user.FirstName = model.FirstName;
+                user.MiddleName = model.MiddleName;
+                user.Passport = model.Passport;
+
+                _context.User.Update(user);
+
+                return await _context.SaveChangesAsync() > 0;
+            }
+
+            return false;
+        }
+
 
         public async Task<bool> IsEmailUnique(string email)
         {
