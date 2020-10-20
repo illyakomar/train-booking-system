@@ -148,7 +148,7 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Dispatcher")]
-        public async Task<IActionResult> Edit(DispatcherFormViewModel model)
+        public async Task<IActionResult> Edit(DispatcherFormViewModel model, int DispatcherId = -1)
         {
             if (ModelState.ErrorCount == 2)
             {
@@ -160,7 +160,7 @@ namespace train_booking.Controllers
                     LastName = model.LastName,
                     MiddleName = model.MiddleName
                 });
-                var DispatchS = await _dispatchersRepository.Update(model.DispatcherId, model);
+                var DispatchS = await _dispatchersRepository.Update(DispatcherId, model);
 
                 if (DispatcherU && DispatchS)
                 {

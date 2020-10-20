@@ -49,6 +49,6 @@ namespace train_booking.ViewModels.Dispatchers
         [Display(Name = "Адреса")]
         public string Address { get; set; }
 
-        public int DispatcherId { get; set; }
+        public int DispatcherId { get; internal set; }
     }
 }

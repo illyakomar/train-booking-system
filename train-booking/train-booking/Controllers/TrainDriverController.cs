@@ -149,9 +149,9 @@ namespace train_booking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, TrainDriver")]
-        public async Task<IActionResult> Edit(TrainDriverFormViewModel model)
+        public async Task<IActionResult> Edit(TrainDriverFormViewModel model, int TrainDriverId = -1)
         {
-            if (ModelState.ErrorCount == 2)
+            if (ModelState.IsValid || ModelState.ErrorCount == 2)
             {
                 var trainU = await _usersRepository.Update(new UserViewModel
                 {
@@ -161,7 +161,7 @@ namespace train_booking.Controllers
                     LastName = model.LastName,
                     MiddleName = model.MiddleName
                 });
-                var trainS = await _trainDriversRepository.Update(model.TrainDriverId, model);
+                var trainS = await _trainDriversRepository.Update(TrainDriverId, model);
 
                 if (trainU && trainS)
                 {

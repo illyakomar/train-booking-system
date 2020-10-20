@@ -15,3 +15,8 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/validationWarning.js"></script>
+}
