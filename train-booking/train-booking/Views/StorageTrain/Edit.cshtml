@@ -1,0 +1,32 @@
+﻿@model train_booking.ViewModels.Trains.TrainViewModel
+
+@{
+    ViewData["Title"] = "Редагування предмету";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Редагувати № Потяга: @Model.NumberTrain</h5>
+            <form method="post" class="form-sample" asp-controller="StorageTrain" asp-action="Edit">
+                @Html.HiddenFor(x => x.TrainId)
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.NumberTrain"></label>
+                    <input type="text" asp-for="NumberTrain" id="NumberTrain" class="form-control form-control-sm" maxlength="64">
+                    <span class="small" asp-validation-for="NumberTrain"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.TypeTrain">Тип потяга</label>
+                    <textarea asp-for="TypeTrain" id="description" class="form-control form-control-sm" maxlength="256" name="TypeTrain"></textarea>
+                    <span class="small" asp-validation-for="TypeTrain"></span>
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-fw">Зберегти</button>
+                <a class="btn btn-outline-secondary btn-fw" href="/StorageTrain">Скасувати</a>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

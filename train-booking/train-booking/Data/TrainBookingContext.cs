@@ -23,6 +23,7 @@ namespace train_booking.Data
         public DbSet<Route> Route { get; set; }
         public DbSet<Dispatcher> Dispatcher { get; set; }
         public DbSet<Chat> Chat { get; set; }
+        public DbSet<Wagon> Wagon { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

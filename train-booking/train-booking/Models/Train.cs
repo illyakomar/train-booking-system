@@ -7,16 +7,11 @@ namespace train_booking.Models
 {
     public class Train
     {
-        public int Id { get; set; }
-        public int TrainDriverId { get; set; }
+        public int TrainId { get; set; }
         public int NumberTrain { get; set; }
         public string TypeTrain { get; set; }
-        public string TypeWagon { get; set; }
-        public int WagonsCount { get; set; }
-        public int PlaceCount { get; set; }
-        public int RouteId { get; set; }
 
-        public virtual Route Route { get; set; }
-        public virtual TrainDriver TrainDriver { get; set; }
+        public virtual ICollection<Route> Route { get; set; }
+        public virtual ICollection<Wagon> Wagon { get; set; }
     }
 }

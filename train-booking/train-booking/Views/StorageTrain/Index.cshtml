@@ -1,0 +1,68 @@
+﻿@model IEnumerable<train_booking.ViewModels.Trains.TrainViewModel>
+
+@{
+    ViewData["Title"] = "Потяги";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Error
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+            <div>
+                <h5 class="card-title">Потяги</h5>
+                <p class="card-text">Усього зареєстрованних в системі: @Model.Count() потягів</p>
+            </div>
+            <div>
+                <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
+                    <i class="ti-plus"></i>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover datatable-table">
+                <thead class="text-center">
+                    <tr>
+                        <th class="visible text-left">Номер потягу</th>
+                        <th class="visible text-left">Кількість вагонів</th>
+                        <th class="visible text-left">Тип потягу</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var train in Model)
+                    {
+                        <tr>
+                            <td class="visible text-left">@train.NumberTrain</td>
+                            <td class="visible text-left">@train.Wagon.Count()</td>
+                            <td class="visable text-left">@train.TypeTrain</td>
+                            <td>
+                                <form class="d-inline" method="get" asp-action="Edit" asp-route-id="@train.TrainId">
+                                    <button type="submit" class="btn btn-inverse-warning btn-rounded btn-icon">
+                                        <i class="ti-pencil-alt2"></i>
+                                    </button>
+                                </form>
+                                <form class="d-inline" method="get" asp-action="Wagon" asp-route-trainId="@train.TrainId">
+                                    <button type="submit" class="btn btn-inverse-success btn-rounded btn-icon">
+                                        <i class="ti-plus"></i>
+                                    </button>
+                                </form>
+                                <form class="d-inline" method="post" asp-action="Delete" asp-route-id="@train.TrainId">
+                                    <button type="submit" class="btn btn-inverse-danger btn-rounded btn-icon">
+                                        <i class="ti-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

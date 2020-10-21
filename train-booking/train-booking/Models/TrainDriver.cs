@@ -12,6 +12,5 @@ namespace train_booking.Models
         public int CertificateNumber { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Train Train { get; set; }
     }
 }

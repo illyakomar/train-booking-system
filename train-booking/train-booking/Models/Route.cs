@@ -11,7 +11,11 @@ namespace train_booking.Models
         public string DeparturePoint { get; set; }
         public DateTime DestinationDate { get; set; }
         public DateTime DeparturePointDate { get; set; }
+        public int TrainId { get; set; }
+        public int TrainDriverId { get; set; }
 
-        public virtual ICollection<Train> Trains { get; set; }
+        public virtual Train Train { get; set; }
+        public virtual TrainDriver TrainDriver { get; set; }
+
     }
 }

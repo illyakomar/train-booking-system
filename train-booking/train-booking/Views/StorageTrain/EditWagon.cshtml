@@ -1,0 +1,39 @@
+﻿@model train_booking.ViewModels.Wagons.WagonViewModel
+
+@{
+    ViewData["Title"] = "Редагування вагону";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Редагування вагону</h5>
+            <form method="post" class="forms-sample" asp-controller="StorageTrain" asp-action="EditWagon">
+                <div asp-validation-summary="ModelOnly"></div>
+                @Html.HiddenFor(x => x.Train.TrainId)
+                @Html.HiddenFor(x => x.WagonId)
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label">Тип вагону</label>
+                    <div class="col-sm-9">
+                        <input type="text" asp-for="TypeWagon" class="form-control form-control-sm">
+                        <span asp-validation-for="TypeWagon"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Кількість місць</label>
+                    <div class="col-sm-9">
+                        <input type="number" asp-for="PlaceCount" class="form-control form-control-sm">
+                        <span asp-validation-for="PlaceCount"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-fw">Зберегти</button>
+                <a class="btn btn-outline-secondary btn-fw" href="/StorageTrain">Скасувати</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
