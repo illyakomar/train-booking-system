@@ -1,0 +1,63 @@
+﻿@model Route
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<train_booking.Models.User> UserManager
+@{
+    ViewData["Title"] = "Деталі про маршрут";
+}
+
+
+<div class="row">
+    <div class="col-xl-6 col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h3 class="card-title text-uppercase">Маршрут: <span>@Model.DeparturePoint</span> <span>@Model.Destination</span></h3>
+                        <p class="mb-3">Машиніст: <span class="font-weight-bold">@Model.TrainDriver.User.LastName @Model.TrainDriver.User.FirstName @Model.TrainDriver.User.MiddleName</span></p>
+                        <p>Дата та час відправлення: <span class="font-weight-bold">@Model.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</span></p>
+                        <p class="mb-3">Дата та час прибуття: <span class="font-weight-bold">@Model.DestinationDate.ToString("dd.MM.yyyy HH:mm")</span></p>
+                        <p class="mb-4">
+                            Номер потягу : <span class="text-muted">@Model.Train.NumberTrain</span>
+                        </p>
+                        <p class="mb-4">
+                            Тип потягу : <span class="text-muted">@Model.Train.TypeTrain</span>
+                        </p>
+                        <p class="mb-4">
+                            Кількість вагонів : <span class="text-muted">@Model.Train.Wagon.Count()</span>
+                        </p>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-end">
+                        @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
+                        {
+                            <form class="d-inline" method="get" asp-action="Edit" asp-route-routeId="@Model.Id">
+                                <button title="Редагувати" type="submit" class="btn btn-inverse-warning btn-rounded btn-icon">
+                                    <i class="ti-pencil-alt"></i>
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <h6>Вагони</h6>
+                    <table class="table datatable-table">
+                        <thead>
+                            <tr>
+                                <th class="visible">Тип вагону</th>
+                                <th class="visible">Кількість місць</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var wagon in Model.Train.Wagon)
+                            {
+                                <tr>
+                                    <td>@wagon.TypeWagon</td>
+                                    <td>@wagon.PlaceCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,7 +22,6 @@
     <Folder Include="Views\Passenger\" />
     <Folder Include="Views\Map\" />
     <Folder Include="Views\Schedule\" />
-    <Folder Include="Views\Route\" />
     <Folder Include="Views\Wagon\" />
     <Folder Include="wwwroot\ServerFiles\" />
   </ItemGroup>

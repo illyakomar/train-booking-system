@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using train_booking.Data;
 using train_booking.Models;
 using train_booking.Services.Interfaces;
+using train_booking.ViewModels.Account;
 using train_booking.ViewModels.TrainDrivers;
 
 namespace train_booking.Services.Repositories
@@ -59,6 +60,20 @@ namespace train_booking.Services.Repositories
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<TrainDriverViewModel>> GetTrainDrivers()
+        {
+            List<TrainDriverViewModel> trainDrivers = new List<TrainDriverViewModel>();
+            foreach (TrainDriver trainDriver in await _context.TrainDriver.Include(trainDriver => trainDriver.User).ToListAsync())
+            {
+                trainDrivers.Add(new TrainDriverViewModel()
+                {
+                    TrainDriverId = trainDriver.TrainDriverId,
+                    User = new UserViewModel(trainDriver.User)
+                });
+            }
+            return trainDrivers;
         }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model train_booking.ViewModels.Routes.RoutesViewModel
+@using train_booking.ViewModels.Trains;
+@using train_booking.ViewModels.TrainDrivers;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<train_booking.Models.User> UserManager
+
+    <form method="post" asp-action="@ViewData["Action"]" asp-controller="Route" class="forms-sample mt-5">
+        @if ((string)ViewData["Action"] == "Edit")
+        {
+            @Html.HiddenFor(x => x.Id)
+        }
+        <div class="form-group row">
+            <label asp-for="DeparturePoint" class="col-sm-3 col-form-label">Пункт Відправлення</label>
+            <div class="col-sm-9">
+                <input asp-for="DeparturePoint" type="text" class="form-control" />
+                <span asp-validation-for="DeparturePoint"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Destination" class="col-sm-3 col-form-label">Пункт Прибуття</label>
+            <div class="col-sm-9">
+                <input asp-for="Destination" type="text" class="form-control" />
+                <span asp-validation-for="Destination"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="DeparturePointDate" class="col-sm-3 col-form-label">Дата та час Відправлення</label>
+            <div class="col-sm-9">
+                <input asp-for="DeparturePointDate" type="datetime-local" class="form-control" />
+                <span asp-validation-for="DeparturePointDate"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="DestinationDate" class="col-sm-3 col-form-label">Дата та час Прибуття</label>
+            <div class="col-sm-9">
+                <input asp-for="DestinationDate" type="datetime-local" class="form-control" />
+                <span asp-validation-for="DestinationDate"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Distance" class="col-sm-3 col-form-label">Відстань</label>
+            <div class="col-sm-9">
+                <input asp-for="Distance" type="number" class="form-control" />
+                <span asp-validation-for="Distance"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Train" class="col-sm-3 col-form-label">Потяг</label>
+            <div class="col-sm-9">
+                <select asp-for="TrainId" class="selectpicker form-control text-dark" data-live-search="true" title="Виберіть потяг...">
+                    @foreach (var item in (List<TrainViewModel>)ViewData["Train"])
+                    {
+                        <option value="@item.TrainId">@item.NumberTrain</option>
+                    }
+                </select>
+                <span asp-validation-for="Train"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="TrainDriver" class="col-sm-3 col-form-label">Машиніст</label>
+            <div class="col-sm-9">
+                <select asp-for="TrainDriverId" class="selectpicker form-control text-dark" data-live-search="true" title="Виберіть машиніста...">
+                    @foreach (var item in (List<TrainDriverViewModel>)ViewData["TrainDriver"])
+                    {
+                        <option value="@item.TrainDriverId">@item.User.LastName @item.User.FirstName</option>
+                    }
+                </select>
+                <span asp-validation-for="TrainDriver"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-fw">Зберегти</button>
+        <a class="btn btn-outline-secondary btn-fw" href="/Route">Скасувати</a>
+    </form>

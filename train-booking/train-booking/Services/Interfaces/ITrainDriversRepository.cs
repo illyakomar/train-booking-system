@@ -13,5 +13,8 @@ namespace train_booking.Services.Interfaces
         Task<bool> Update(int id, TrainDriverFormViewModel model);
         Task<TrainDriver> GetById(int id);
         Task<bool> Remove(int id);
+        Task<IEnumerable<TrainDriverViewModel>> GetTrainDrivers();
+
+
     }
 }

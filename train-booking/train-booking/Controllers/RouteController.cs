@@ -2,87 +2,183 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using train_booking.Models;
+using train_booking.Services.Interfaces;
+using train_booking.ViewModels.Account;
+using train_booking.ViewModels.Routes;
+using train_booking.ViewModels.TrainDrivers;
+using train_booking.ViewModels.Trains;
 
 namespace train_booking.Controllers
 {
     public class RouteController : Controller
     {
-        // GET: RouteController
-        public ActionResult Index()
+        private readonly IRoutesRepository _routesRepository;
+        private readonly ITrainsRepository _trainsRepository;
+        private readonly IWagonsRepository _wagonsRepository;
+        private readonly IUsersRepository _usersRepository;
+        private readonly ITrainDriversRepository _trainDriversRepository;
+        private readonly UserManager<User> _userManager;
+
+        public RouteController(
+            IRoutesRepository routesRepository,
+            ITrainsRepository trainsRepository,
+            IWagonsRepository wagonsRepository,
+            IUsersRepository usersRepository,
+            ITrainDriversRepository trainDriversRepository,
+            UserManager<User> userManager
+        )
         {
-            return View();
+            _routesRepository = routesRepository;
+            _trainsRepository = trainsRepository;
+            _wagonsRepository = wagonsRepository;
+            _usersRepository = usersRepository;
+            _trainDriversRepository = trainDriversRepository;
+            _userManager = userManager;
         }
 
-        // GET: RouteController/Details/5
-        public ActionResult Details(int id)
+
+        [Route("{controller}")]
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver")]
+        public IActionResult Index(string message = null, string error = null)
         {
-            return View();
+            ViewBag.Message = message;
+            ViewBag.Error = error;
+
+            RoutesIndexViewModel routesIndexViewModel = new RoutesIndexViewModel()
+            {
+                Routes = _routesRepository.GetRoutes().ToList()
+            };
+            return View(routesIndexViewModel);
         }
 
-        // GET: RouteController/Create
-        public ActionResult Create()
+        [Authorize(Roles = "Administrator,Dispatcher")]
+        public async Task<IActionResult> Create()
         {
-            return View();
+            IEnumerable<TrainViewModel> trains = _trainsRepository.GetTrains();
+            IEnumerable<TrainDriverViewModel> trainDriver = await _trainDriversRepository.GetTrainDrivers();
+
+            RoutesViewModel route = new RoutesViewModel
+            {
+                DeparturePointDate = DateTime.Now.Date,
+                DestinationDate = DateTime.Now.Date
+            };
+
+
+            ViewData["Train"] = trains;
+            ViewData["TrainDriver"] = trainDriver;
+
+            return View(route);
         }
 
-        // POST: RouteController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [Authorize(Roles = "Administrator,Dispatcher")]
+        public async Task<IActionResult> Create(RoutesViewModel routes)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    Route route = new Route()
+                    {
+                        Id = routes.Id,
+                        TrainId = routes.TrainId,
+                        Distance = routes.Distance,
+                        TrainDriverId = routes.TrainDriverId,
+                        Destination = routes.Destination,
+                        DeparturePoint = routes.DeparturePoint,
+                        DestinationDate = routes.DestinationDate,
+                        DeparturePointDate = routes.DeparturePointDate
+                    };
+                    await _routesRepository.Insert(route);
+                    return RedirectToAction("Index", "Route", new { message = "Маршрут успішно додано!" });
+                }
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Route", new { error = "При створенні маршруту виникла невідома помилка!" });
             }
+            return RedirectToAction("Index", "Route", new { error = "При створенні маршруту виникла невідома помилка!" });
         }
 
-        // GET: RouteController/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize(Roles = "Administrator,Dispatcher")]
+        [Route("{controller}/{action}/{routeId}")]
+        public async Task<IActionResult> Edit(int routeId)
         {
-            return View();
+            Route route = await _routesRepository.GetByIdAsync(routeId);
+            ViewData["Train"] = _trainsRepository.GetTrains();
+            ViewData["TrainDriver"] = await _trainDriversRepository.GetTrainDrivers();
+
+            if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
+            {
+                RoutesViewModel model = new RoutesViewModel
+                {
+                    Id = route.Id,
+                    Distance = route.Distance,
+                    TrainDriverId = route.TrainDriverId,
+                    TrainId = route.TrainId,
+                    Destination = route.Destination,
+                    DeparturePoint = route.DeparturePoint,
+                    DestinationDate = route.DestinationDate,
+                    DeparturePointDate = route.DeparturePointDate
+                };
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Route", new { error = "Ви успішно відредагували маршрут!" });
         }
 
-        // POST: RouteController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Authorize(Roles = "Administrator,Dispatcher")]
+        [Route("{controller}/{action}/{routeId}")]
+        public async Task<IActionResult> Edit(RoutesViewModel route)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var oldRoute = await _routesRepository.GetByIdAsync(route.Id);
+
+                oldRoute.TrainId = route.TrainId;
+                oldRoute.Distance = route.Distance;
+                oldRoute.TrainDriverId = route.TrainDriverId;
+                oldRoute.Destination = route.Destination;
+                oldRoute.DeparturePoint = route.DeparturePoint;
+                oldRoute.DestinationDate = route.DestinationDate;
+                oldRoute.DeparturePointDate = route.DeparturePointDate;
+
+                await _routesRepository.Update(oldRoute);
+
+                return RedirectToAction("Index", "Route", new { message = "Ви успішно відредагували маршрут!" });
             }
-            catch
-            {
-                return View();
-            }
+            return View(route);
         }
 
-        // GET: RouteController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: RouteController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize(Roles = "Administrator,Dispatcher")]
+        [Route("{controller}/{action}/{routeId}")]
+        public async Task<IActionResult> Delete(int routeId)
         {
-            try
+            bool res = await _routesRepository.Delete(routeId);
+            if (res)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Route", new { message = "Маршрут успішно видалений!" });
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Index", "Route", new { error = "Сталася невідома помилка при видаленні маршруту!" });
             }
+
+        }
+
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver")]
+        [Route("{controller}/{action}/{trainId}")]
+        public async Task<IActionResult> Details(int trainId)
+        {
+            Route route = await _routesRepository.GetRouteByTrainId(trainId);
+            return View(route);
         }
     }
 }

@@ -1,0 +1,90 @@
+﻿@model train_booking.ViewModels.Routes.RoutesIndexViewModel
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<train_booking.Models.User> UserManager
+
+@{
+    ViewData["Title"] = "Маршрути";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Error
+    </div>
+}
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Message
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h3 class="card-title text-uppercase">Маршрути</h3>
+                        <p class="mb-3">Усього: <span class="font-weight-bold text-danger">@Model.Routes.Count()</span> маршрути</p>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover datatable-table">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="visible">Пункт Відправлення</th>
+                                <th class="visible">Пункт Призначення</th>
+                                <th class="visible">Дистанція (км)</th>
+                                <th class="visible">Дата та час відправлення</th>
+                                <th class="visible">Дата та час прибуття</th>
+                                <th class="visible">Машиніст</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach (var route in Model.Routes)
+                            {
+                                <tr>
+                                    <td>@route.DeparturePoint</td>
+                                    <td>@route.Destination</td>
+                                    <td>@route.Distance</td>
+                                    <td>@route.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@route.DestinationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@route.TrainDriver.User.LastName @route.TrainDriver.User.FirstName @route.TrainDriver.User.MiddleName</td>
+                                    <td class="text-center">
+                                        <form class="d-inline-flex" method="get" asp-action="Details" asp-route-trainId="@route.TrainId">
+                                            <button title="Деталі" type="submit" class="btn btn-inverse-info btn-rounded btn-icon">
+                                                <i class="ti-info-alt"></i>
+                                            </button>
+                                        </form>
+                                        @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
+                                        {
+                                            <form class="d-inline-flex" method="get" asp-action="Edit" asp-route-routeId="@route.Id">
+                                                <button title="Редагувати маршрут" type="submit" class="btn btn-inverse-warning btn-rounded btn-icon">
+                                                    <i class="ti-pencil-alt"></i>
+                                                </button>
+                                            </form>
+                                            <form class="d-inline-flex" method="post">
+                                                <button title="Видалити маршрут" type="submit" class="btn btn-inverse-danger btn-rounded btn-icon" asp-action="Delete" asp-route-routeId="@route.Id">
+                                                    <i class="ti-trash"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
