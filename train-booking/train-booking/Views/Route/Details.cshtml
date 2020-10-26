@@ -7,24 +7,35 @@
 
 
 <div class="row">
-    <div class="col-xl-6 col-lg-12 stretch-card">
+    <div class="col-md-12 stretch-card">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <h3 class="card-title text-uppercase">Маршрут: <span>@Model.DeparturePoint</span> <span>@Model.Destination</span></h3>
+                        <h3 class="card-title text-uppercase text-info">Маршрут: <span>@Model.DeparturePoint</span> <span>@Model.Destination</span></h3>
                         <p class="mb-3">Машиніст: <span class="font-weight-bold">@Model.TrainDriver.User.LastName @Model.TrainDriver.User.FirstName @Model.TrainDriver.User.MiddleName</span></p>
                         <p>Дата та час відправлення: <span class="font-weight-bold">@Model.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</span></p>
                         <p class="mb-3">Дата та час прибуття: <span class="font-weight-bold">@Model.DestinationDate.ToString("dd.MM.yyyy HH:mm")</span></p>
-                        <p class="mb-4">
-                            Номер потягу : <span class="text-muted">@Model.Train.NumberTrain</span>
-                        </p>
-                        <p class="mb-4">
-                            Тип потягу : <span class="text-muted">@Model.Train.TypeTrain</span>
-                        </p>
-                        <p class="mb-4">
-                            Кількість вагонів : <span class="text-muted">@Model.Train.Wagon.Count()</span>
-                        </p>
+                        <p class="mb-3">Дистанція: <span class="font-weight-bold">@Model.Distance км</span></p>
+                        <div class="table-responsive mb-5">
+                            <h6>Потяг</h6>
+                            <table class="table table-hover datatable-table">
+                                <thead>
+                                    <tr class="table-info">
+                                        <th class="visible">Номер потягу</th>
+                                        <th class="visible">Тип потягу</th>
+                                        <th class="visible">Кількість вагонів</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.Train.NumberTrain</td>
+                                        <td>@Model.Train.TypeTrain</td>
+                                        <td>@Model.Train.Wagon.Count()</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="d-flex flex-wrap justify-content-end">
                         @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
@@ -39,11 +50,12 @@
                 </div>
                 <div class="table-responsive">
                     <h6>Вагони</h6>
-                    <table class="table datatable-table">
+                    <table class="table table-hover datatable-table">
                         <thead>
-                            <tr>
+                            <tr class="table-success">
                                 <th class="visible">Тип вагону</th>
                                 <th class="visible">Кількість місць</th>
+                                <th class="visible">Ціна квитка UAH</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,6 +64,7 @@
                                 <tr>
                                     <td>@wagon.TypeWagon</td>
                                     <td>@wagon.PlaceCount</td>
+                                    <td>@wagon.PlacePrice</td>
                                 </tr>
                             }
                         </tbody>

@@ -6,7 +6,6 @@ namespace train_booking.Models
     {
         public int Id { get; set; }
         public int PlaceNumber { get; set; }
-        public int Price { get; set; }
         public bool Benefits { get; set; }
         public DateTime CreationTime { get; set; }
         public bool AdditionalServices { get; set; }

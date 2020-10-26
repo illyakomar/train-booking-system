@@ -26,6 +26,7 @@ namespace train_booking.Services.Repositories
             {
                 TypeWagon = model.TypeWagon,
                 PlaceCount = model.PlaceCount,
+                PlacePrice = model.PlacePrice,
                 TrainId = model.TrainId
             };
 
@@ -43,6 +44,7 @@ namespace train_booking.Services.Repositories
                 WagonId = wagonFromDB.WagonId,
                 TypeWagon = wagonFromDB.TypeWagon,
                 PlaceCount = wagonFromDB.PlaceCount,
+                PlacePrice = wagonFromDB.PlacePrice,
                 Train = wagonFromDB.Train
             };
         }
@@ -54,6 +56,7 @@ namespace train_booking.Services.Repositories
             {
                 wagon.TypeWagon = model.TypeWagon;
                 wagon.PlaceCount = model.PlaceCount;
+                wagon.PlacePrice = model.PlacePrice;
                 
                 _context.Wagon.Update(wagon);
 
@@ -71,6 +74,7 @@ namespace train_booking.Services.Repositories
                     WagonId = model.WagonId,
                     TypeWagon = model.TypeWagon,
                     PlaceCount = model.PlaceCount,
+                    PlacePrice = model.PlacePrice,
                     Train = model.Train,
                     TrainId = model.TrainId
                 })
@@ -86,40 +90,6 @@ namespace train_booking.Services.Repositories
             await _context.SaveChangesAsync();
         }
 
-        //public async Task<List<RouteWagon>> GetAllNextRouteWagons()
-        //{
-        //    var nextCourseModules = await _context.CourseModule.Include(cm => cm.Module).Include(cm => cm.Course).ThenInclude(c => c.CourseStudent).Where(cm => cm.Date >= DateTime.Now || cm.StartTime >= DateTime.Now.TimeOfDay.Add(new TimeSpan(-2, 0, 0))).ToListAsync();
-        //    nextCourseModules = nextCourseModules.OrderBy(cm => cm.Date).ToList();
-        //    return nextCourseModules;
-        //}
-
-        //public async Task<List<RouteWagon>> GetAllNextCourseModulesAvaliableForStudent(string channelId)
-        //{
-        //    var userId = _context.BotAuthorizedUsers.Where(u => u.ChannelUserId == channelId).SingleOrDefault().UserId;
-        //    var student = await _context.Student.Include(x => x.User).FirstAsync(x => x.UserId == userId);
-        //    var nextCourseModules = await GetAllNextCourseModules();
-        //    return nextCourseModules.Where(cm => cm.Course.CourseStudent.Any(cs => cs.StudentId == student.StudentId)).ToList();
-        //}
-
-        //public Wagon GetWagone(int routeId, int wagonId)
-        //{
-        //    return _context.RouteWagon
-        //        .Include(x => x.Module)
-        //        .Where(x => x.RouteId == routeId)
-        //        .Select(x => x.Module)
-        //        .Where(x => x.WagonId == wagonId)
-        //        .FirstOrDefault();
-        //}
-        //public Route GetRouteById(int id)
-        //{
-        //    return _context.Route
-        //        .Include(x => x.Teacher)
-        //        .Include(x => x.CourseModule)
-        //        .Include(x => x.CourseStudent)
-        //        .Include(x => x.Subject)
-        //        .Where(x => x.CourseId == id)
-        //        .FirstOrDefault();
-        //}
-
+      
     }
 }

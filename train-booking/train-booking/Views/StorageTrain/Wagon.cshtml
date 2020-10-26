@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
             <div>
-                <h5>Вагони</h5>
+                <h5 class="card-title">Вагони</h5>
             </div>
             <div>
                 <form class="d-inline" method="get" asp-action="CreateWagon" asp-route-trainId="@ViewBag.TrainId">
@@ -27,11 +27,12 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover datatable-table">
+            <table class="table table-hover datatable-table mt-2">
                 <thead>
-                    <tr>
+                    <tr class="table-info">
                         <th class="visible">Тип вагону</th>
                         <th class="visible">Кількість місць</th>
+                        <th class="visible">Ціна квитка UAH</th>
                         <th>Дії</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                         <tr>
                             <td>@wagon.TypeWagon</td>
                             <td>@wagon.PlaceCount</td>
+                            <td>@wagon.PlacePrice</td>
                             <td class="text-left">
                                 <form class="d-inline" method="get" asp-action="EditWagon" asp-route-wagonId="@wagon.WagonId">
                                     <button type="submit" class="btn btn-inverse-warning btn-rounded btn-icon">

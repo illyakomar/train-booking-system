@@ -18,6 +18,10 @@ namespace train_booking.ViewModels.Wagons
         [Required(ErrorMessage = "Поле Кількість місць в вагоні обов'язкове.")]
         [Display(Name = "Кількість місць")]
         public int PlaceCount { get; set; }
+
+        [Required(ErrorMessage = "Поле Ціна квитка обов'язкове.")]
+        [Display(Name = "Ціна квитка")]
+        public int PlacePrice { get; set; }
         public Train Train { get; set; }
         public int TrainId { get; set; }
 

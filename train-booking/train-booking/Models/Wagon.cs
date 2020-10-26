@@ -11,6 +11,7 @@ namespace train_booking.Models
         public int TrainId { get; set; }
         public string TypeWagon { get; set; }
         public int PlaceCount { get; set; }
+        public int PlacePrice { get; set; }
 
         public virtual Train Train { get; set; }
     }
