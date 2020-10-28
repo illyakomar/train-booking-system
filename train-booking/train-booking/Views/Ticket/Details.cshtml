@@ -1,0 +1,55 @@
+﻿@model Route
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<train_booking.Models.User> UserManager
+@{
+    ViewData["Title"] = "Деталі про маршрут";
+}
+
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h3 class="card-title text-uppercase text-info">Маршрут: <span>@Model.DeparturePoint</span> <span>@Model.Destination</span></h3>
+                        <p class="mb-3">Номер потягу: <span class="font-weight-bold">@Model.Train.NumberTrain</span></p>
+                        <p class="mb-3">Тип потягу: <span class="font-weight-bold">@Model.Train.TypeTrain</span></p>
+                        <p>Дата та час відправлення: <span class="font-weight-bold">@Model.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</span></p>
+                        <p class="mb-3">Дата та час прибуття: <span class="font-weight-bold">@Model.DestinationDate.ToString("dd.MM.yyyy HH:mm")</span></p>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <h6>Вагони</h6>
+                    <table class="table table-hover datatable-table">
+                        <thead class="text-center">
+                            <tr class="table-success">
+                                <th class="visible">Тип вагону</th>
+                                <th class="visible">Кількість місць</th>
+                                <th class="visible">Ціна квитка UAH</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach (var wagon in Model.Train.Wagon)
+                            {
+                                <tr>
+                                    <td>@wagon.TypeWagon</td>
+                                    <td>@wagon.PlaceCount</td>
+                                    <td>@wagon.PlacePrice</td>
+                                    <td>
+                                        <form class="d-inline" method="get" asp-action="Edit" asp-route-id="@wagon.TrainId">
+                                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
+                                                Вибрати
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

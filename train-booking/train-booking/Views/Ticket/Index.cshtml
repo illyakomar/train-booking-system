@@ -20,16 +20,16 @@
                         </div>
                         <div class="form-row d-flex justify-content-center">
                             <div>
-                                <input type="text" id="departure-point" class="form-control " placeholder="Звідки">
+                                <input type="search" id="departure-point" class="form-control " placeholder="Звідки">
                             </div>
                             <div>
-                                <input type="text" id="destination" class="form-control" placeholder="Куди">
+                                <input type="search" id="destination" class="form-control" placeholder="Куди">
                             </div>
                             <div>
-                                <input type="date" id="departure-point-date" class="form-control" placeholder="Дата">
+                                <input type="text" id="departure-point-date" class="form-control datepicker" placeholder="Дата">
                             </div>
                             <div class="col-md-3">
-                                <button id="searching-button" class="btn btn-block btn-group-sm btn-danger">Знайти</button>
+                                <button id="searching-button" class="btn btn-block btn-group-sm btn-danger btn-icon-text"><i class="ti-search btn-icon-prepend"></i>Знайти</button>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
 
                                             <td class="text-center">
                                                 <form class="d-inline-flex" method="get" asp-action="Details" asp-route-trainId="@route.TrainId">
-                                                    <button title="Деталі" type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
+                                                    <button type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
                                                         Вибрати
                                                     </button>
                                                 </form>
@@ -79,8 +79,15 @@
     </div>
 </div>
 
+@section Styles{
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+
+}
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="~/js/ticketSearching.js"></script>
+    <script src="~/js/datepicker.js"></script>
 }
 

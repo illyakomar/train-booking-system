@@ -15,12 +15,9 @@
                 return;
             }
 
-            const splitedRouteDate = departurePointDateValue.split('-');
-            const formatedDeparturePointDateValue = `${splitedRouteDate[2]}.${splitedRouteDate[1]}.${splitedRouteDate[0]}`;
-
             if (departurePointValue.toLowerCase() !== tdsTextForSearch[0]
                 || destinationValue.toLocaleLowerCase() !== tdsTextForSearch[1]
-                || formatedDeparturePointDateValue.split(' ')[0] !== tdsTextForSearch[2]) {
+                || departurePointDateValue !== tdsTextForSearch[2]) {
                 $(this).toggle(false);
                 return;
             }

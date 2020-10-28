@@ -234,32 +234,5 @@ namespace train_booking.Controllers
             }
         }
 
-        //[HttpGet("/Teachers/GetTrainDriverRoutes/channelId={channelId}")]
-        //public async Task<IActionResult> GetTrainDriverRoutes(string channelId)
-        //{
-        //    try
-        //    {
-        //        var userId = _userRepository.GetAuthorizedUserId(channelId);
-        //        var teacher = await _userRepository.GetById(userId);
-        //        var courses = await _coursesRepository.GetTeacherCourses(teacher.Id);
-
-        //        // Remove self-loop
-        //        for (int i = 0; i < courses.Count; i++)
-        //        {
-        //            for (int j = 0; j < courses[i].CourseModule.Count; j++)
-        //            {
-        //                courses[i].CourseModule.ToList()[j].Course = null;
-        //                courses[i].CourseModule.ToList()[j].Module.CourseModule = null;
-        //            }
-        //            courses[i].CourseStudent = null;
-        //        }
-
-        //        return Json(courses);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return NotFound("No courses have been found");
-        //    }
-        //}
     }
 }

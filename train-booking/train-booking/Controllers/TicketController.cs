@@ -51,5 +51,13 @@ namespace train_booking.Controllers
             };
             return View(routesIndexViewModel);
         }
+
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver")]
+        [Route("{controller}/{action}/{trainId}")]
+        public async Task<IActionResult> Details(int trainId)
+        {
+            Route route = await _routesRepository.GetRouteByTrainId(trainId);
+            return View(route);
+        }
     }
 }
