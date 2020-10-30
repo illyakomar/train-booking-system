@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using train_booking.Data;
 
 namespace train_booking.Migrations
 {
     [DbContext(typeof(TrainBookingContext))]
-    partial class TrainBookingContextModelSnapshot : ModelSnapshot
+    [Migration("20201030180516_UpdateRoutAndTrain")]
+    partial class UpdateRoutAndTrain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,7 +252,10 @@ namespace train_booking.Migrations
                     b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("WagonId")
@@ -258,7 +263,7 @@ namespace train_booking.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.HasIndex("WagonId");
 
@@ -522,7 +527,7 @@ namespace train_booking.Migrations
                 {
                     b.HasOne("train_booking.Models.User", "User")
                         .WithMany("Seats")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
 
                     b.HasOne("train_booking.Models.Wagon", "Wagon")
                         .WithMany("Seats")

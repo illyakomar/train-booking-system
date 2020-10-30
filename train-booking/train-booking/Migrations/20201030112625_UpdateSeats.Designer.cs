@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using train_booking.Data;
 
 namespace train_booking.Migrations
 {
     [DbContext(typeof(TrainBookingContext))]
-    partial class TrainBookingContextModelSnapshot : ModelSnapshot
+    [Migration("20201030112625_UpdateSeats")]
+    partial class UpdateSeats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,8 +230,7 @@ namespace train_booking.Migrations
 
                     b.HasIndex("TrainDriverId");
 
-                    b.HasIndex("TrainId")
-                        .IsUnique();
+                    b.HasIndex("TrainId");
 
                     b.ToTable("Route");
                 });
@@ -250,7 +251,10 @@ namespace train_booking.Migrations
                     b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("WagonId")
@@ -258,7 +262,7 @@ namespace train_booking.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.HasIndex("WagonId");
 
@@ -512,8 +516,8 @@ namespace train_booking.Migrations
                         .IsRequired();
 
                     b.HasOne("train_booking.Models.Train", "Train")
-                        .WithOne("Route")
-                        .HasForeignKey("train_booking.Models.Route", "TrainId")
+                        .WithMany("Route")
+                        .HasForeignKey("TrainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -522,7 +526,7 @@ namespace train_booking.Migrations
                 {
                     b.HasOne("train_booking.Models.User", "User")
                         .WithMany("Seats")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
 
                     b.HasOne("train_booking.Models.Wagon", "Wagon")
                         .WithMany("Seats")

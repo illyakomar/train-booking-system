@@ -19,11 +19,11 @@ namespace train_booking.Data
         public DbSet<User> User { get; set; }
         public DbSet<Train> Train { get; set; }
         public DbSet<TrainDriver> TrainDriver { get; set; }
-        public DbSet<Ticket> Ticket { get; set; }
         public DbSet<Route> Route { get; set; }
         public DbSet<Dispatcher> Dispatcher { get; set; }
         public DbSet<Chat> Chat { get; set; }
         public DbSet<Wagon> Wagon { get; set; }
+        public DbSet<Seat> Seat { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

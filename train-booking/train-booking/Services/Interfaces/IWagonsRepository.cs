@@ -9,14 +9,11 @@ namespace train_booking.Services.Interfaces
 {
     public interface IWagonsRepository
     {
-        Task Insert(WagonViewModel model);
-        WagonViewModel GetById(int id);
+        Task Insert(Wagon wagon);
+        Task<Wagon> GetById(int id);
         Task Update(WagonViewModel model);
         IEnumerable<WagonViewModel> GetWagonByTrainId(int id);
         Task Delete(int id);
-        //Task<List<RouteWagon>> GetAllNextRouteWagons();
-        //Task<List<RouteWagon>> GetAllNextCourseModulesAvaliableForStudent(string channelId);
-        //Wagon GetWagone(int routeId, int wagonId);
-        //Route GetRouteById(int id);
+        Task CreateSeat(int wagonId, int placeNumber);
     }
 }

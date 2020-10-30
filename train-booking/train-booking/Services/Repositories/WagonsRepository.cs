@@ -20,34 +20,34 @@ namespace train_booking.Services.Repositories
         {
             _context = context;
         }
-        public async Task Insert(WagonViewModel model)
+
+        public async Task Insert(Wagon wagon)
         {
-            var wag = new Wagon
-            {
-                TypeWagon = model.TypeWagon,
-                PlaceCount = model.PlaceCount,
-                PlacePrice = model.PlacePrice,
-                TrainId = model.TrainId
-            };
-
-            _context.Wagon.Add(wag);
-
+            _context.Wagon.Add(wagon);
             await _context.SaveChangesAsync();
-
         }
 
-        public WagonViewModel GetById(int id)
+        public async Task<Wagon> GetById(int id)
         {
-            Wagon wagonFromDB = _context.Wagon.Include(x => x.Train).Where(x => x.WagonId == id).FirstOrDefault();
-            return new WagonViewModel()
-            {
-                WagonId = wagonFromDB.WagonId,
-                TypeWagon = wagonFromDB.TypeWagon,
-                PlaceCount = wagonFromDB.PlaceCount,
-                PlacePrice = wagonFromDB.PlacePrice,
-                Train = wagonFromDB.Train
-            };
+            return await _context.Wagon
+                .Include(wagon => wagon.Train)
+                .Include(wagon => wagon.Seats)
+                .Where(wagon => wagon.WagonId == id)
+                .FirstOrDefaultAsync();
         }
+
+        public async Task CreateSeat(int wagonId, int placeNumber)
+        {
+            Seat seat = new Seat
+            {
+                SeatNumber = placeNumber,
+                WagonId = wagonId,
+                SeatAvailability = true
+            };
+            await _context.Seat.AddAsync(seat);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task Update(WagonViewModel model)
         {
             var wagon = _context.Wagon.Where(m => m.WagonId == model.WagonId).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace train_booking.Services.Repositories
                 wagon.TypeWagon = model.TypeWagon;
                 wagon.PlaceCount = model.PlaceCount;
                 wagon.PlacePrice = model.PlacePrice;
-                
+
                 _context.Wagon.Update(wagon);
 
                 await _context.SaveChangesAsync();
@@ -90,6 +90,6 @@ namespace train_booking.Services.Repositories
             await _context.SaveChangesAsync();
         }
 
-      
+
     }
 }

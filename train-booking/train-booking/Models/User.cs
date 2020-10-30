@@ -13,7 +13,7 @@ namespace train_booking.Models
         public string ResetCode { get; set; }
         public DateTime LastResetCodeCreationTime { get; set; }
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; }
         public virtual TrainDriver TrainDrivers { get; set; }
         public virtual TwoFactorUser TwoFactorUser { get; set; }
         public virtual Dispatcher Dispatchers { get; set; }

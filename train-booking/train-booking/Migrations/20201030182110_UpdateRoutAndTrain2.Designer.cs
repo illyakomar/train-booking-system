@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using train_booking.Data;
 
 namespace train_booking.Migrations
 {
     [DbContext(typeof(TrainBookingContext))]
-    partial class TrainBookingContextModelSnapshot : ModelSnapshot
+    [Migration("20201030182110_UpdateRoutAndTrain2")]
+    partial class UpdateRoutAndTrain2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

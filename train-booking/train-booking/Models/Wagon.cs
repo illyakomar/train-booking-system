@@ -14,5 +14,6 @@ namespace train_booking.Models
         public int PlacePrice { get; set; }
 
         public virtual Train Train { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; }
     }
 }

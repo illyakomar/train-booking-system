@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Seat>
+
+    @{ 
+        ViewData["Title"] = "Мої квитки"; 
+    }
+
+<h1 class="text-center">Мої квитки</h1>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Пункт відправлення</th>
+                <th class="text-center">Пункт призначення</th>
+                <th class="text-center">Тип вагона</th>
+                <th class="text-center">Номер вагон</th>
+                <th class="text-center">Місце</th>
+                <th class="text-center">Дата поїздки</th>
+                <th class="text-center">Ціна місця</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var seat in Model)
+            {
+                <tr>
+                    <td>@seat.Wagon.Train.Route.DeparturePoint</td>
+                    <td>@seat.Wagon.Train.Route.Destination</td>
+                    <td>@seat.Wagon.TypeWagon</td>
+                    <td>@seat.Wagon.WagonId</td>
+                    <td>@seat.SeatNumber</td>
+                    <td>@seat.Wagon.Train.Route.DeparturePointDate</td>
+                    <td>@seat.Wagon.PlacePrice</td>
+                </tr>            
+             }
+        </tbody>
+    </table>
+</div>

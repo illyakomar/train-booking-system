@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Seat>
+
+@{ ViewData["Title"] = "Бронювання квитка"; }
+
+
+<div class="col-md-12 stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-start justify-content-between">
+                <div>
+                    <h5 class="card-title">Бронювання квитка</h5>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover datatable-table">
+                <thead class="text-center">
+                    <tr class="table-info">
+                        <th>Місце</th>
+                        <th>Ціна</th>
+                        <th >Дії</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var seat in Model)
+                    {
+                        <tr>
+                        <td>@seat.SeatNumber</td>
+                        <td>@seat.Wagon.PlacePrice</td>
+                            <td>
+                                <a asp-action="ReservationConfirmation" asp-controller="Ticket" asp-route-id="@seat.Id">Купити</a>
+                            </td>
+                        </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

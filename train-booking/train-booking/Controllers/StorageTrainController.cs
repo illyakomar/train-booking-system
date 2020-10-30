@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using train_booking.Data;
+using train_booking.Models;
 using train_booking.Services.Interfaces;
 using train_booking.ViewModels.Trains;
 using train_booking.ViewModels.Wagons;
@@ -121,7 +122,21 @@ namespace train_booking.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _wagonRepository.Insert(model);
+                Wagon wagon = new Wagon
+                {
+                    TypeWagon = model.TypeWagon,
+                    PlaceCount = model.PlaceCount,
+                    PlacePrice = model.PlacePrice,
+                    TrainId = model.TrainId
+                };
+
+                await _wagonRepository.Insert(wagon);
+
+                for (int i = 0; i < model.PlaceCount; i += 1)
+                {
+                    await _wagonRepository.CreateSeat(wagon.WagonId, i + 1);
+                }
+
                 return RedirectToAction("Wagon", "StorageTrain", new { trainId = model.TrainId });
             }
             return View(model);
@@ -129,9 +144,9 @@ namespace train_booking.Controllers
 
         [Authorize(Roles = "Administrator,Dispatcher")]
         [Route("{controller}/{action}/{wagonId}")]
-        public IActionResult EditWagon(int wagonId)
+        public async Task<IActionResult> EditWagon(int wagonId)
         {
-            WagonViewModel wagon = _wagonRepository.GetById(wagonId);
+            Wagon wagon = await _wagonRepository.GetById(wagonId);
             return View(wagon);
         }
 

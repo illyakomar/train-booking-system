@@ -38,7 +38,7 @@
                                     <td>@wagon.PlaceCount</td>
                                     <td>@wagon.PlacePrice</td>
                                     <td>
-                                        <form class="d-inline" method="get" asp-action="Edit" asp-route-id="@wagon.TrainId">
+                                        <form class="d-inline" method="get" asp-action="Reservation" asp-controller="Ticket" asp-route-wagonId="@wagon.WagonId">
                                             <button type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
                                                 Вибрати
                                             </button>

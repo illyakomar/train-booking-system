@@ -11,7 +11,7 @@ namespace train_booking.Models
         public int NumberTrain { get; set; }
         public string TypeTrain { get; set; }
 
-        public virtual ICollection<Route> Route { get; set; }
+        public virtual Route Route { get; set; }
         public virtual ICollection<Wagon> Wagon { get; set; }
     }
 }

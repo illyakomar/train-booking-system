@@ -1,0 +1,85 @@
+﻿@model train_booking.ViewModels.Tickets.ReservationConfirmationViewModel
+@{ ViewData["Title"] = "Підтвердження бронювання"; }
+
+<h1>Підтвердження бронювання</h1>
+
+<div>
+    <h4>Білет</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.MiddleName)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Passport)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Passport)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeparturePoint)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeparturePoint)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Destination)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.Destination)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeparturePointDate)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.DeparturePointDate)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WagonType)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WagonType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WagonId)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.WagonId)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SeatNumber)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SeatNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PlacePrice)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.PlacePrice)
+        </dt>
+    </dl>
+
+    <form asp-action="ReservationConfirmation">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="SeatId" />
+        <input type="hidden" asp-for="PlacePrice" />
+        <input type="submit" value="Забронювати" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-controller="Ticket">Назад</a>
+    </form>
+</div>

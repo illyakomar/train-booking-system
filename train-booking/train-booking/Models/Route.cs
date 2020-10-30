@@ -16,6 +16,5 @@ namespace train_booking.Models
 
         public virtual Train Train { get; set; }
         public virtual TrainDriver TrainDriver { get; set; }
-
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using train_booking.Data;
 
 namespace train_booking.Migrations
 {
     [DbContext(typeof(TrainBookingContext))]
-    partial class TrainBookingContextModelSnapshot : ModelSnapshot
+    [Migration("20201029154347_AddRouteTicket")]
+    partial class AddRouteTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,21 +230,45 @@ namespace train_booking.Migrations
 
                     b.HasIndex("TrainDriverId");
 
-                    b.HasIndex("TrainId")
-                        .IsUnique();
+                    b.HasIndex("TrainId");
 
                     b.ToTable("Route");
                 });
 
-            modelBuilder.Entity("train_booking.Models.Seat", b =>
+            modelBuilder.Entity("train_booking.Models.Sale", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SaleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("LastBookingTime")
+                    b.Property<DateTime>("SaleDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SaleId");
+
+                    b.HasIndex("TicketId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Sale");
+                });
+
+            modelBuilder.Entity("train_booking.Models.Seat", b =>
+                {
+                    b.Property<int>("SeatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("SeatAvailability")
                         .HasColumnType("bit");
@@ -250,19 +276,56 @@ namespace train_booking.Migrations
                     b.Property<int>("SeatNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("WagonId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("SeatId");
 
                     b.HasIndex("WagonId");
 
                     b.ToTable("Seat");
+                });
+
+            modelBuilder.Entity("train_booking.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AdditionalServices")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Benefits")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlaceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RouteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteId");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Ticket");
                 });
 
             modelBuilder.Entity("train_booking.Models.Train", b =>
@@ -512,23 +575,51 @@ namespace train_booking.Migrations
                         .IsRequired();
 
                     b.HasOne("train_booking.Models.Train", "Train")
-                        .WithOne("Route")
-                        .HasForeignKey("train_booking.Models.Route", "TrainId")
+                        .WithMany("Route")
+                        .HasForeignKey("TrainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("train_booking.Models.Sale", b =>
+                {
+                    b.HasOne("train_booking.Models.Ticket", "Ticket")
+                        .WithMany("Sales")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("train_booking.Models.User", "User")
+                        .WithMany("Sales")
+                        .HasForeignKey("UserId1");
+                });
+
             modelBuilder.Entity("train_booking.Models.Seat", b =>
                 {
-                    b.HasOne("train_booking.Models.User", "User")
-                        .WithMany("Seats")
-                        .HasForeignKey("UserId");
-
                     b.HasOne("train_booking.Models.Wagon", "Wagon")
                         .WithMany("Seats")
                         .HasForeignKey("WagonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("train_booking.Models.Ticket", b =>
+                {
+                    b.HasOne("train_booking.Models.Route", "Route")
+                        .WithMany("Tickets")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("train_booking.Models.Seat", "Seat")
+                        .WithMany("Tickets")
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("train_booking.Models.User", "User")
+                        .WithMany("Tickets")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("train_booking.Models.TrainDriver", b =>
