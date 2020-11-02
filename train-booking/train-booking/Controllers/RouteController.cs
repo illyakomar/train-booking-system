@@ -100,7 +100,7 @@ namespace train_booking.Controllers
             }
             catch
             {
-                return RedirectToAction("Index", "Route", new { error = "При створенні маршруту виникла невідома помилка!" });
+                return RedirectToAction("Index", "Route", new { error = "Не можливо створити маршрут, спочатку видаліть маршрут з потрібним потягом!" });
             }
             return RedirectToAction("Index", "Route", new { error = "При створенні маршруту виникла невідома помилка!" });
         }

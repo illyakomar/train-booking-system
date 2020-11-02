@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using train_booking.Data;
 using train_booking.Models;
 using train_booking.Services.Interfaces;
 using train_booking.ViewModels.Passengers;
 
 namespace train_booking.Controllers
 {
-    public class PassengerController : Controller
+    public class AdminController : Controller
     {
+   
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IPassengersRepository _passengersRepository;
 
 
-        public PassengerController
+        public AdminController
         (
             IPassengersRepository passengersRepository,
             SignInManager<User> signInManager,
@@ -36,39 +36,37 @@ namespace train_booking.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Passenger")]
+        [Authorize(Roles = "Administrator")]
         [Route("{controller}/{action}/{id}")]
         public async Task<IActionResult> Setting(string id)
         {
-            User passenger = await _passengersRepository.GetById(id);
+            User admin = await _passengersRepository.GetById(id);
 
-            PassengerFormViewModel model = new PassengerFormViewModel
+            AdminFormViewModel model = new AdminFormViewModel
             {
-                Id = passenger.Id,
-                LastName = passenger.LastName,
-                FirstName = passenger.FirstName,
-                MiddleName = passenger.MiddleName,
-                Passport = passenger.Passport,
-                Email = passenger.Email
+                Id = admin.Id,
+                LastName = admin.LastName,
+                FirstName = admin.FirstName,
+                MiddleName = admin.MiddleName,
+                Email = admin.Email
             };
 
             return View(model);
         }
 
         [HttpPost]
-        [Authorize(Roles = "Passenger")]
-        public async Task<IActionResult> Setting(PassengerFormViewModel model)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Setting(AdminFormViewModel model)
         {
-            var res = await _passengersRepository.Update(model);
+            var res = await _passengersRepository.UpdateAdmin(model);
             if (res && (ModelState.IsValid || ModelState.ErrorCount == 1))
             {
-                return RedirectToAction("Passenger", "Profile");
+                return RedirectToAction("Admin", "Profile");
             }
             else
             {
-                return RedirectToAction("Passenger", "Profile", new { error = "Сталася невідома помилка при редагуванні викладача!" });
+                return RedirectToAction("Admin", "Profile", new { error = "Сталася невідома помилка при редагуванні викладача!" });
             }
         }
-
     }
 }

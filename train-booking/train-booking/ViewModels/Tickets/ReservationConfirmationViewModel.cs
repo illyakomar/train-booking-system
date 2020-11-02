@@ -28,6 +28,8 @@ namespace train_booking.ViewModels.Tickets
 
         [Display(Name = "Дата та час відправлення")]
         public DateTime? DeparturePointDate { get; set; }
+        [Display(Name = "Дата та час призначення")]
+        public DateTime? DestinationDate { get; set; }
 
         [Display(Name = "Тип вагона")]
         public string WagonType { get; set; }

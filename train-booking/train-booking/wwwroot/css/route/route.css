@@ -6,7 +6,7 @@ html {
     font-size: 16px;
 }
 
-.bus, .route-info {
+.train, .route-info {
     margin: 20px auto;
     max-width: 56%;
 }
@@ -21,21 +21,27 @@ ol {
     list-style: none;
 }
 
+#seats-container {
+    background-color: white;
+}
+
 .seats {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: flex-start;
 }
 
 .seat {
-    display: flex;
-    flex: 0 0 9.28571428571429%;
+    background-color: #18FFAD;
+    text-decoration: none;
+    margin-left: auto;
+    outline: 1px solid #000;
+    font-size: 40px;
     padding: 5px;
-    position: relative;
 }
 
-    .seat input[type=checkbox] {
+    .seat a[type=checkbox] {
         position: absolute;
         opacity: 0;
     }
@@ -44,14 +50,14 @@ ol.seats > li.seat > input[type="checkbox"]:checked ~ label {
     background-color: #ff0000;
 }
 
-.seat input[type=checkbox]:disabled ~ label {
+.seat a[type=checkbox]:disabled ~ label {
     background: #dddddd;
     text-indent: -9999px;
     overflow: hidden;
 }
 
 li.seat > label.disabled,
-li.seat > input.disabled {
+li.seat > a.disabled {
     pointer-events: none;
     background: red;
 }

@@ -60,6 +60,7 @@ namespace train_booking
             services.AddScoped<ITrainsRepository, TrainsRepository>();
             services.AddScoped<IWagonsRepository, WagonsRepository>();
             services.AddScoped<IRoutesRepository, RoutesRepository>();
+            services.AddScoped<IPassengersRepository, PassengersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

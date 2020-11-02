@@ -98,6 +98,7 @@ namespace train_booking.Controllers
                     DeparturePoint = seat.Wagon.Train.Route.DeparturePoint,
                     Destination = seat.Wagon.Train.Route.Destination,
                     DeparturePointDate = seat.Wagon.Train.Route.DeparturePointDate,
+                    DestinationDate = seat.Wagon.Train.Route.DestinationDate,
                     WagonType = seat.Wagon.TypeWagon,
                     WagonId = seat.Wagon.WagonId,
                     SeatNumber = seat.SeatNumber,

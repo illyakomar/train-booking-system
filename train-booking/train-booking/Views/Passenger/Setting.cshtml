@@ -1,0 +1,51 @@
+﻿@model train_booking.ViewModels.Passengers.PassengerFormViewModel
+@{
+    ViewData["Title"] = "Налаштування";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Налаштування</h5>
+            <form method="post" class="form-sample" asp-action="Setting" asp-controller="Passenger">
+                <div asp-validation-summary="ModelOnly"></div>
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Email)
+                <div class="form-group">
+                    <label asp-for="LastName">Прізвище</label>
+                    <input asp-for="LastName" class="form-control" type="text" placeholder="Прізвище">
+                    <span asp-validation-for="LastName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName">Ім'я</label>
+                    <input asp-for="FirstName" class="form-control" type="text" placeholder="Ім'я">
+                    <span asp-validation-for="FirstName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MiddleName">По батькові</label>
+                    <input asp-for="MiddleName" class="form-control" type="text" placeholder="По батькові">
+                    <span asp-validation-for="MiddleName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">Еmail</label>
+                    <input asp-for="Email" class="form-control" type="text" placeholder="Email" disabled>
+                    <span asp-validation-for="Email"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Passport">Паспорт</label>
+                    <input asp-for="Passport" class="form-control" type="text" placeholder="Паспорт">
+                    <span asp-validation-for="Passport"></span>
+                </div>
+                <button class="btn btn-primary mr-2" type="submit">Зберегти</button>
+                <button class="btn btn-light mr-2" type="reset">Скасувати</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/changeEmailHandler.js"></script>
+}
