@@ -84,3 +84,8 @@ body {
     color: white; 
     background-color: white;
 }
+
+#chat-container {
+    overflow-y: scroll;
+    height: 85vh;
+}

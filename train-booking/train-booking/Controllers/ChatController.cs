@@ -2,86 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using train_booking.Data;
+using train_booking.Models;
+using train_booking.ViewModels.Chats;
 
 namespace train_booking.Controllers
 {
     public class ChatController : Controller
     {
-        // GET: ChatController
-        public ActionResult Index()
+        private readonly UserManager<User> _userManager;
+        private readonly TrainBookingContext _context;
+
+        public ChatController
+        (
+            UserManager<User> userManager,
+            TrainBookingContext context
+        )
         {
-            return View();
+            _userManager = userManager;
+            _context = context;
         }
 
-        // GET: ChatController/Details/5
-        public ActionResult Details(int id)
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver")]
+        public IActionResult Index()
         {
-            return View();
-        }
-
-        // GET: ChatController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ChatController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var model = new ChatViewModel
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                UserId = _userManager.GetUserId(User),
 
-        // GET: ChatController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+                Messages = _context.Chat.Select(x => new MessageViewModel
+                {
+                    user = _userManager.FindByIdAsync(x.UserId).Result,
+                    message = x.Message,
+                    date = x.ChatDate
+                }).OrderBy(x => x.date).ToList()
+            };
 
-        // POST: ChatController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ChatController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ChatController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
     }
 }

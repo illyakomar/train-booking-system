@@ -15,6 +15,8 @@ using train_booking.Services.Interfaces;
 using train_booking.Services.Repositories;
 using train_booking.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using train_booking.Hubs;
 
 namespace train_booking
 {
@@ -53,6 +55,10 @@ namespace train_booking
             .AddEntityFrameworkStores<TrainBookingContext>()
             .AddDefaultTokenProviders();
 
+            services.AddSignalR();
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IDispatchersRepository, DispatchersRepository>();
@@ -61,6 +67,8 @@ namespace train_booking
             services.AddScoped<IWagonsRepository, WagonsRepository>();
             services.AddScoped<IRoutesRepository, RoutesRepository>();
             services.AddScoped<IPassengersRepository, PassengersRepository>();
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +96,11 @@ namespace train_booking
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseEndpoints(endpoints =>
             {
