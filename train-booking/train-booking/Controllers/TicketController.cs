@@ -2,8 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using train_booking.Data;
 using train_booking.Models;
@@ -137,7 +141,7 @@ namespace train_booking.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
         public async Task<IActionResult> History()
         {
             string userId = (await _userManager.GetUserAsync(User)).Id;
@@ -148,5 +152,6 @@ namespace train_booking.Controllers
                 .ToListAsync();
             return View(seats);
         }
+
     }
 }
