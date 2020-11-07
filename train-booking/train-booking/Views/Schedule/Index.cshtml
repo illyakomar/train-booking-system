@@ -1,0 +1,46 @@
+﻿@model train_booking.ViewModels.Routes.RoutesIndexViewModel
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<train_booking.Models.User> UserManager
+
+@{
+    ViewData["Title"] = "Розклад";
+}
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <!-- clock widget start -->
+                <script type="text/javascript">var css_file = document.createElement("link"); css_file.setAttribute("rel", "stylesheet"); css_file.setAttribute("type", "text/css"); css_file.setAttribute("href", "//s.bookcdn.com//css/cl/bw-cl-150x100t.css"); document.getElementsByTagName("head")[0].appendChild(css_file);</script> <div id="tw_8_312803778"><div style="width:150px; height:100px; margin: 0 auto;"><a href="https://hotelmix.com.ua/time/kiev-18881">Київ</a><br /></div></div>
+                <script type="text/javascript">function setWidgetData_312803778(data) { if (typeof (data) != 'undefined' && data.results.length > 0) { for (var i = 0; i < data.results.length; ++i) { var objMainBlock = ''; var params = data.results[i]; objMainBlock = document.getElementById('tw_' + params.widget_type + '_' + params.widget_id); if (objMainBlock !== null) objMainBlock.innerHTML = params.html_code; } } } var clock_timer_312803778 = -1;</script>
+                <script type="text/javascript" charset="UTF-8" src="https://widgets.booked.net/time/info?ver=2&domid=966&type=8&id=312803778&scode=124&city_id=18881&wlangid=29&mode=1&details=0&background=rgba(0,0,0,0.6)&color=ffffff&add_background=ffffff&add_color=ffffff&head_color=ffffff&border=0&transparent=1"></script>
+                <!-- clock widget end -->
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover datatable-table table-dark">
+                        <thead class="text-center">
+                            <tr class="table-dark">
+                                <th class="text-black">№ маршруту</th>
+                                <th class="text-black">Пункт Відправлення</th>
+                                <th class="text-black">Пункт Призначення</th>
+                                <th class="text-black">Дата та час відправлення</th>
+                                <th class="text-black">Дата та час прибуття</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach (var route in Model.Routes)
+                            {
+                                <tr>
+                                    <td>@route.Id</td>
+                                    <td>@route.DeparturePoint</td>
+                                    <td>@route.Destination</td>
+                                    <td>@route.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@route.DestinationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

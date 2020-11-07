@@ -2,86 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using train_booking.Models;
+using train_booking.Services.Interfaces;
+using train_booking.ViewModels.Routes;
 
 namespace train_booking.Controllers
 {
     public class ScheduleController : Controller
     {
-        // GET: ScheduleController
-        public ActionResult Index()
+
+        private readonly IRoutesRepository _routesRepository;
+
+        public ScheduleController(
+            IRoutesRepository routesRepository
+        )
         {
-            return View();
+            _routesRepository = routesRepository;
         }
 
-        // GET: ScheduleController/Details/5
-        public ActionResult Details(int id)
+        [Route("{controller}")]
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver, Passenger")]
+        public IActionResult Index()
         {
-            return View();
-        }
+            List<Route> routes = _routesRepository.GetRoutes().ToList();
+            List<Route> departureRoutes = new List<Route>();
 
-        // GET: ScheduleController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ScheduleController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            DateTime currentTime = DateTime.Now;
+                
+            foreach (Route route in routes)
             {
-                return RedirectToAction(nameof(Index));
+                TimeSpan span = route.DeparturePointDate - currentTime;
+
+                if (span.TotalMilliseconds >= 0)
+                {
+                    departureRoutes.Add(route);
+                }
             }
-            catch
+
+            RoutesIndexViewModel routesIndexViewModel = new RoutesIndexViewModel()
             {
-                return View();
-            }
+                Routes = departureRoutes
+            };
+
+
+            return View(routesIndexViewModel);
         }
 
-        // GET: ScheduleController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ScheduleController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ScheduleController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ScheduleController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

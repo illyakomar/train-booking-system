@@ -86,6 +86,12 @@
                             <span class="menu-title">Мої квитки</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Schedule")">
+                            <i class="ti-calendar menu-icon"></i>
+                            <span class="menu-title">Розклад</span>
+                        </a>
+                    </li>
                     @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator") || User.IsInRole("TrainDriver"))
                     {
                         <li class="nav-item">
@@ -107,12 +113,6 @@
                             </a>
                         </li>
                     }
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ti-calendar menu-icon"></i>
-                            <span class="menu-title">Розклад</span>
-                        </a>
-                    </li>
                     @if (User.IsInRole("Administrator"))
                     {
                         <li class="nav-item">

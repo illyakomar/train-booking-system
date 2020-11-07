@@ -4,84 +4,58 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using train_booking.Data;
 
 namespace train_booking.Controllers
 {
     public class StatisticsController : Controller
     {
-        // GET: StatisticsController
-        public ActionResult Index()
+        private readonly TrainBookingContext _context;
+
+        public StatisticsController(
+            TrainBookingContext context 
+        )
         {
-            return View();
+            _context = context;
         }
 
-        // GET: StatisticsController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public IActionResult Index()
         {
-            return View();
+            return Json(new int[0]);
         }
 
-        // GET: StatisticsController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> GetWagonOnRouteBarData(int count = 10)
         {
-            return View();
+            var json = await _context.Route
+                .Include(x => x.Train)
+                .Select(x => new
+                {
+                    x.DeparturePoint,
+                    x.Destination,
+                    Wagons = x.Train.Wagon.Count
+                })
+                .ToListAsync();
+
+            return Json(json.Take(count));
         }
 
-        // POST: StatisticsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet]
+        public async Task<IActionResult> GetUserSeats(int count = 10)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var json = await _context.User
+                .Include(x => x.Seats)
+                .Select(x => new
+                {
+                    x.Email,
+                    Seats = x.Seats.Count()
+                })
+                .ToListAsync();
+
+            return Json(json.Take(count));
         }
 
-        // GET: StatisticsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: StatisticsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: StatisticsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: StatisticsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
