@@ -12,7 +12,6 @@ namespace train_booking.Models
         public int WagonId { get; set; }
         public int SeatNumber { get; set; }
         public bool SeatAvailability { get; set; }
-        public DateTime LastBookingTime { get; set; }
 
         public virtual Wagon Wagon { get; set; }
         public virtual User User { get; set; }

@@ -74,18 +74,21 @@
                             </a>
                         }
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Ticket")">
-                            <i class="ti-shopping-cart menu-icon"></i>
-                            <span class="menu-title">Замовити квиток</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("History", "Ticket")">
-                            <i class="ti-receipt menu-icon"></i>
-                            <span class="menu-title">Мої квитки</span>
-                        </a>
-                    </li>
+                    @if (User.IsInRole("Passenger"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Ticket")">
+                                <i class="ti-shopping-cart menu-icon"></i>
+                                <span class="menu-title">Замовити квиток</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("History", "Ticket")">
+                                <i class="ti-receipt menu-icon"></i>
+                                <span class="menu-title">Мої квитки</span>
+                            </a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "Schedule")">
                             <i class="ti-calendar menu-icon"></i>

@@ -44,7 +44,7 @@ namespace train_booking.Controllers
 
 
         [Route("{controller}")]
-        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         public IActionResult Index(string message = null, string error = null)
         {
             ViewBag.Message = message;
@@ -57,7 +57,7 @@ namespace train_booking.Controllers
             return View(routesIndexViewModel);
         }
 
-        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         [Route("{controller}/{action}/{trainId}")]
         public async Task<IActionResult> Details(int trainId)
         {
@@ -66,7 +66,7 @@ namespace train_booking.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         [Route("{controller}/{action}/{wagonId}")]
         public async Task<IActionResult> Reservation(int wagonId)
         {
@@ -76,7 +76,7 @@ namespace train_booking.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         public async Task<IActionResult> ReservationConfirmation(int id)
         {
             try
@@ -113,7 +113,7 @@ namespace train_booking.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         public async Task<IActionResult> ReservationConfirmation(ReservationConfirmationViewModel reservationConfirmationViewModel)
         {
             try
@@ -137,7 +137,7 @@ namespace train_booking.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Administrator, Dispatcher, TrainDriver, Passenger")]
+        [Authorize(Roles = "Passenger")]
         public async Task<IActionResult> History()
         {
             string userId = (await _userManager.GetUserAsync(User)).Id;

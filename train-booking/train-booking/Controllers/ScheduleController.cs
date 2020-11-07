@@ -25,7 +25,7 @@ namespace train_booking.Controllers
         }
 
         [Route("{controller}")]
-        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver, Passenger")]
+        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver,Passenger")]
         public IActionResult Index()
         {
             List<Route> routes = _routesRepository.GetRoutes().ToList();
