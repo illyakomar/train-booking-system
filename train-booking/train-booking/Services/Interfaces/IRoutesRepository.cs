@@ -15,5 +15,6 @@ namespace train_booking.Services.Interfaces
         Task Update(Route route);
         Task<bool> Delete(int id);
         Task<Route> GetRouteByTrainId(int trainId);
+        Task<RoutesIndexViewModel> GetTrainDriverRouteByIdAsync(int trainDriverId);
     }
 }

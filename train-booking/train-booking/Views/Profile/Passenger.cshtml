@@ -29,10 +29,15 @@
             <div class="card-body">
                 <p class="card-title">Пасажир: <span>@Model.LastName @Model.FirstName @Model.MiddleName</span></p>
                 <div class="d-flex justify-content-between align-items-center">
+                    <div class="item-thumbnail">
+                        <img src="~/lib/template/images/faces/face15.jpg" alt="image" class="profile-pic">
+                    </div>
                     <div>
                         <p class="mb-3">Email: <span class="font-weight-bold">@Model.Email</span></p>
                         <p class="mb-3">Прізвище: <span class="font-weight-bold">@Model.LastName</span></p>
                         <p class="mb-3">Імя: <span class="font-weight-bold">@Model.FirstName</span></p>
+                    </div>
+                    <div>
                         <p class="mb-3">По батькові: <span class="font-weight-bold">@Model.MiddleName</span></p>
                         <p class="mb-3">Паспорт: <span class="font-weight-bold">@Model.Passport</span></p>
                     </div>

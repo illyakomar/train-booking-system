@@ -127,26 +127,12 @@ namespace train_booking.Controllers
 
                 _context.Seat.Update(seat);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("History");
+                return RedirectToAction("History", "MyHistory");
             }
             catch
             {
                 return NotFound();
             }
-        }
-
-
-        [HttpGet]
-        [Authorize(Roles = "Passenger")]
-        public async Task<IActionResult> History()
-        {
-            string userId = (await _userManager.GetUserAsync(User)).Id;
-            List<Seat> seats = await _context.Seat
-                .Where(seat => seat.UserId == userId)
-                .Include(seat => seat.Wagon)
-                .ThenInclude(wagon => wagon.Train.Route)
-                .ToListAsync();
-            return View(seats);
         }
 
     }

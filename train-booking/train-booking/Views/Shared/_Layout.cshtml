@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject UserManager<train_booking.Models.User> UserManager
+@inject train_booking.Services.Interfaces.ITrainDriversRepository trainDriverRepository
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +84,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("History", "Ticket")">
+                            <a class="nav-link" href="@Url.Action("History", "MyHistory")">
                                 <i class="ti-receipt menu-icon"></i>
                                 <span class="menu-title">Мої квитки</span>
                             </a>
@@ -95,7 +96,7 @@
                             <span class="menu-title">Розклад</span>
                         </a>
                     </li>
-                    @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator") || User.IsInRole("TrainDriver"))
+                    @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
                     {
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Index", "Route")">
@@ -134,6 +135,27 @@
                             <a class="nav-link" href="@Url.Action("Index", "Dispatcher")">
                                 <i class="ti-user menu-icon"></i>
                                 <span class="menu-title">Диспетчер</span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("TrainDriver"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("GetDriverRoute", "Route", new { trainDriverId = (await trainDriverRepository.GetByUserId((await UserManager.GetUserAsync(User)).Id)).TrainDriverId})">
+                                <i class="ti-direction menu-icon"></i>
+                                <span class="menu-title">Маршрути</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Map")">
+                                <i class="ti-map menu-icon"></i>
+                                <span class="menu-title">Карта</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Chat")">
+                                <i class="ti-comments menu-icon"></i>
+                                <span class="menu-title">Чат</span>
                             </a>
                         </li>
                     }

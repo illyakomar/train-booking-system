@@ -32,6 +32,19 @@ namespace train_booking.Services.Repositories
             return await _context.Route.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<RoutesIndexViewModel> GetTrainDriverRouteByIdAsync(int trainDriverId)
+        {
+            return new RoutesIndexViewModel
+            {
+                Routes = await _context.Route
+               .Where(x => x.TrainDriverId == trainDriverId)
+               .Include(x => x.Train)
+               .Include(x => x.TrainDriver)
+               .ThenInclude(x => x.User)
+               .ToListAsync()
+            };
+        }
+
         public async Task Insert(Route route)
         {
             _context.Route.Add(route);

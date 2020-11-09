@@ -127,7 +127,7 @@ namespace train_booking
             string adminEmail = admin.GetValue<string>("email");
             string adminPassword = admin.GetValue<string>("password");
 
-            //Check that there is an Administrator role and create if not
+            
             Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Administrator");
             hasAdminRole.Wait();
 
@@ -164,8 +164,6 @@ namespace train_booking
                 roleResultPassenger.Wait();
             }
 
-            //Check if the admin user exists and create it if not
-            //Add to the Administrator role
 
             Task<User> adminUser = userManager.FindByEmailAsync(adminEmail);
             adminUser.Wait();

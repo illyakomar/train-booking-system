@@ -43,7 +43,7 @@ namespace train_booking.Controllers
 
 
         [Route("{controller}")]
-        [Authorize(Roles = "Administrator,Dispatcher,TrainDriver")]
+        [Authorize(Roles = "Administrator,Dispatcher")]
         public IActionResult Index(string message = null, string error = null)
         {
             ViewBag.Message = message;
@@ -54,6 +54,13 @@ namespace train_booking.Controllers
                 Routes = _routesRepository.GetRoutes().ToList()
             };
             return View(routesIndexViewModel);
+        }
+
+        [Authorize(Roles = "TrainDriver")]
+        [Route("{controller}/{action}/{trainDriverId}")]
+        public async Task<IActionResult> GetDriverRoute(int trainDriverId)
+        {
+            return View(await _routesRepository.GetTrainDriverRouteByIdAsync(trainDriverId));
         }
 
         [Authorize(Roles = "Administrator,Dispatcher")]
