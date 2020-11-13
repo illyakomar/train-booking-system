@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,14 +46,26 @@ namespace train_booking.Controllers
 
         [Route("{controller}")]
         [Authorize(Roles = "Passenger")]
-        public IActionResult Index(string message = null, string error = null)
+        public IActionResult Index()
         {
-            ViewBag.Message = message;
-            ViewBag.Error = error;
+            List<Route> routes = _routesRepository.GetRoutes().ToList();
+            List<Route> departureRoutes = new List<Route>();
+
+            DateTime currentTime = DateTime.Now;
+
+            foreach (Route route in routes)
+            {
+                TimeSpan span = route.DeparturePointDate - currentTime;
+
+                if (span.TotalMilliseconds >= 0)
+                {
+                    departureRoutes.Add(route);
+                }
+            }
 
             RoutesIndexViewModel routesIndexViewModel = new RoutesIndexViewModel()
             {
-                Routes = _routesRepository.GetRoutes().ToList()
+                Routes = departureRoutes
             };
             return View(routesIndexViewModel);
         }

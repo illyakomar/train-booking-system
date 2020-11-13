@@ -20609,17 +20609,17 @@ dl li {
 
 /* Sidebar */
 .sidebar {
-  min-height: calc(100vh - 70px);
-  background: #dddce1;
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  padding: 0;
-  width: 237px;
-  z-index: 11;
-  transition: width 0.25s ease, background 0.25s ease;
-  -webkit-transition: width 0.25s ease, background 0.25s ease;
-  -moz-transition: width 0.25s ease, background 0.25s ease;
-  -ms-transition: width 0.25s ease, background 0.25s ease;
+    min-height: calc(100vh - 70px);
+    background: #f8f6fe;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    padding: 0;
+    width: 237px;
+    z-index: 11;
+    transition: width 0.25s ease, background 0.25s ease;
+    -webkit-transition: width 0.25s ease, background 0.25s ease;
+    -moz-transition: width 0.25s ease, background 0.25s ease;
+    -ms-transition: width 0.25s ease, background 0.25s ease;
 }
 
 .sidebar .nav {
@@ -20843,25 +20843,25 @@ dl li {
 
 /* Navbar */
 .navbar {
-  font-weight: 400;
-  transition: background 0.25s ease;
-  -webkit-transition: background 0.25s ease;
-  -moz-transition: background 0.25s ease;
-  -ms-transition: background 0.25s ease;
-  -webkit-box-shadow: 0 5px 21px -5px #cdd1e1;
-  -moz-box-shadow: 0 5px 21px -5px #cdd1e1;
-  box-shadow: 0 5px 21px -5px #cdd1e1;
+    font-weight: 400;
+    transition: background 0.25s ease;
+    -webkit-transition: background 0.25s ease;
+    -moz-transition: background 0.25s ease;
+    -ms-transition: background 0.25s ease;
+    -webkit-box-shadow: 0 5px 21px -5px #cdd1e1;
+    -moz-box-shadow: 0 5px 21px -5px #cdd1e1;
+    box-shadow: 0 1px 9px rgba(0,0,0,0.12), 0 1px 9px rgba(0,0,0,0.24);
 }
 
-.navbar .navbar-brand-wrapper {
-  background: #ffffff;
-  transition: width 0.25s ease, background 0.25s ease;
-  -webkit-transition: width 0.25s ease, background 0.25s ease;
-  -moz-transition: width 0.25s ease, background 0.25s ease;
-  -ms-transition: width 0.25s ease, background 0.25s ease;
-  width: 237px;
-  height: 70px;
-}
+    .navbar .navbar-brand-wrapper {
+        background: rgba(204,204,204,1);
+        transition: width 0.25s ease, background 0.25s ease;
+        -webkit-transition: width 0.25s ease, background 0.25s ease;
+        -moz-transition: width 0.25s ease, background 0.25s ease;
+        -ms-transition: width 0.25s ease, background 0.25s ease;
+        width: 237px;
+        height: 70px;
+    }
 
 .navbar .navbar-brand-wrapper .navbar-brand {
   color: #27367f;
@@ -20898,18 +20898,18 @@ dl li {
   height: 30px;
 }
 
-.navbar .navbar-menu-wrapper {
-  background: #ffffff;
-  transition: width 0.25s ease;
-  -webkit-transition: width 0.25s ease;
-  -moz-transition: width 0.25s ease;
-  -ms-transition: width 0.25s ease;
-  color: #9b9b9b;
-  padding-left: 2.55rem;
-  padding-right: 2.55rem;
-  width: calc(100% - 237px);
-  height: 70px;
-}
+    .navbar .navbar-menu-wrapper {
+        background: rgba(204,204,204,1);
+        transition: width 0.25s ease;
+        -webkit-transition: width 0.25s ease;
+        -moz-transition: width 0.25s ease;
+        -ms-transition: width 0.25s ease;
+        color: #9b9b9b;
+        padding-left: 2.55rem;
+        padding-right: 2.55rem;
+        width: calc(100% - 237px);
+        height: 70px;
+    }
 
 @media (max-width: 991px) {
   .navbar .navbar-menu-wrapper {

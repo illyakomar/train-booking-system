@@ -5,11 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using train_booking.Services.Interfaces;
 
@@ -17,8 +13,8 @@ namespace train_booking.Services
 {
     public class EmailSender : IEmailSender
     {
-        private IWebHostEnvironment _environment;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private string _title;
         private string _email;
@@ -32,11 +28,10 @@ namespace train_booking.Services
             _httpContextAccessor = httpContextAccessor;
 
             var mail = configuration.GetSection("Mail");
-
-            _title = mail.GetValue<string>("Title");
-            _email = mail.GetValue<string>("Address");
-            _password = mail.GetValue<string>("Password");
-            _host = mail.GetValue<string>("Host");
+            _title = Environment.GetEnvironmentVariable("MAIL_TITLE");
+            _email = Environment.GetEnvironmentVariable("MAIL_ADDRESS");
+            _password = Environment.GetEnvironmentVariable("MAIL_PASSWORD");
+            _host = Environment.GetEnvironmentVariable("MAIL_HOST");
             _port = mail.GetValue<int>("Port");
         }
 

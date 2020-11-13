@@ -25,6 +25,7 @@ namespace train_booking
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            DotNetEnv.Env.Load();
         }
 
         public IConfiguration Configuration { get; }
@@ -124,10 +125,10 @@ namespace train_booking
 
             var admin = Configuration.GetSection("Administrator");
 
-            string adminEmail = admin.GetValue<string>("email");
-            string adminPassword = admin.GetValue<string>("password");
+            string adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
+            string adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
 
-            
+
             Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Administrator");
             hasAdminRole.Wait();
 
