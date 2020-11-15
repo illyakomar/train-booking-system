@@ -58,5 +58,11 @@ namespace train_booking.Services.Repositories
 
             return false;
         }
+
+        public IEnumerable<Dispatcher> GetDispatcherForStatic()
+        {
+            return _context.Dispatcher
+                .ToList<Dispatcher>();
+        }
     }
 }

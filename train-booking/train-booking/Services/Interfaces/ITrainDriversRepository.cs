@@ -14,7 +14,7 @@ namespace train_booking.Services.Interfaces
         Task<TrainDriver> GetById(int id);
         Task<bool> Remove(int id);
         Task<IEnumerable<TrainDriverViewModel>> GetTrainDrivers();
-
+        IEnumerable<TrainDriver> GetTrainDriversForStatic();
 
     }
 }

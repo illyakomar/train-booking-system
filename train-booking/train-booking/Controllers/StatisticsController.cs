@@ -42,20 +42,5 @@ namespace train_booking.Controllers
             return Json(json.Take(count));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUserSeats(int count = 10)
-        {
-            var json = await _context.User
-                .Include(x => x.Seats)
-                .Select(x => new
-                {
-                    x.Email,
-                    Seats = x.Seats.Count()
-                })
-                .ToListAsync();
-
-            return Json(json.Take(count));
-        }
-
     }
 }

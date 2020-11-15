@@ -96,5 +96,11 @@ namespace train_booking.Services.Repositories
             return await _context.User.SingleOrDefaultAsync(u => u.UserName == userName);
         }
 
+        public IEnumerable<User> GetUsers()
+        {
+            return _context.User
+                .ToList<User>();
+        }
+
     }
 }

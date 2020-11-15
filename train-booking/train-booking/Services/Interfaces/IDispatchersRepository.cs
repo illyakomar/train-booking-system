@@ -12,5 +12,6 @@ namespace train_booking.Services.Interfaces
         Task<Dispatcher> GetByUserId(string id);
         Task<bool> Update(int id, DispatcherFormViewModel model);
         Task<bool> Remove(int id);
+        IEnumerable<Dispatcher> GetDispatcherForStatic();
     }
 }

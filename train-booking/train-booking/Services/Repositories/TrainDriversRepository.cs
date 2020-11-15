@@ -75,5 +75,11 @@ namespace train_booking.Services.Repositories
             }
             return trainDrivers;
         }
+
+        public IEnumerable<TrainDriver> GetTrainDriversForStatic()
+        {
+            return _context.TrainDriver
+                .ToList<TrainDriver>();
+        }
     }
 }

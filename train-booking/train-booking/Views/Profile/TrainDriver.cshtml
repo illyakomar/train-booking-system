@@ -1,4 +1,4 @@
-﻿@model train_booking.Models.TrainDriver
+﻿@model train_booking.ViewModels.Statistics.StatisticssViewModel
 
 
 @{
@@ -14,7 +14,7 @@
                 </h4>
             </div>
             <div>
-                <form method="get" asp-controller="TrainDriver" asp-action="Setting" asp-route-id="@Model.UserId">
+                <form method="get" asp-controller="TrainDriver" asp-action="Setting" asp-route-id="@Model.Id">
                     <button type="submit" class="btn btn-primary btn-icon-text btn-rounded">
                         <i class="ti-settings btn-icon-prepend"></i>Налаштування
                     </button>
@@ -27,18 +27,18 @@
     <div class="col-md-8 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">Машиніст: <span>@Model.User.LastName @Model.User.FirstName @Model.User.MiddleName</span></p>
+                <p class="card-title">Машиніст: <span>@Model.LastName @Model.FirstName @Model.MiddleName</span></p>
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <div class="item-thumbnail">
                         <img src="~/lib/template/images/favicon-32.png" alt="image" class="profile-pic">
                     </div>
                     <div>
-                        <p class="mb-3">Email: <span class="font-weight-bold">@Model.User.Email</span></p>
-                        <p class="mb-3">Прізвище: <span class="font-weight-bold">@Model.User.LastName</span></p>
-                        <p class="mb-3">Імя: <span class="font-weight-bold">@Model.User.FirstName</span></p>
+                        <p class="mb-3">Email: <span class="font-weight-bold">@Model.Email</span></p>
+                        <p class="mb-3">Прізвище: <span class="font-weight-bold">@Model.LastName</span></p>
+                        <p class="mb-3">Імя: <span class="font-weight-bold">@Model.FirstName</span></p>
                     </div>
                     <div>
-                        <p class="mb-3">По батькові: <span class="font-weight-bold">@Model.User.MiddleName</span></p>
+                        <p class="mb-3">По батькові: <span class="font-weight-bold">@Model.MiddleName</span></p>
                         <p class="mb-3">Медична книга: <span class="font-weight-bold">@Model.HealthStatus</span></p>
                         <p class="mb-3">Номер сертифікату: <span class="font-weight-bold">@Model.CertificateNumber</span></p>
                     </div>
@@ -48,9 +48,32 @@
         </div>
     </div>
 </div>
-
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title text-md-center text-xl-left">Кількість користувачів в системі</p>
+                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">@Model.Users.Count()</h3>
+                    <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title text-md-center text-xl-left">Кількість маршрутів</p>
+                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">@Model.Routes.Count()</h3>
+                    <i class="ti-direction icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Статистика кількості вагонів на маршруті</h3>

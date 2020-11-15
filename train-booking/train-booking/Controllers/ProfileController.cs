@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using train_booking.Data;
 using train_booking.Models;
 using train_booking.Services.Interfaces;
+using train_booking.ViewModels.Statistics;
 
 namespace train_booking.Controllers
 {
@@ -16,6 +17,7 @@ namespace train_booking.Controllers
     public class ProfileController : Controller
     {
         private readonly IDispatchersRepository _dispatchersRepository;
+        private readonly IRoutesRepository _routesRepository;
         private readonly ITrainDriversRepository _trainDriversRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly TrainBookingContext _context;
@@ -24,6 +26,7 @@ namespace train_booking.Controllers
         public ProfileController
         (
             IUsersRepository usersRepository,
+            IRoutesRepository routesRepository,
             IDispatchersRepository dispatchersRepository,
             ITrainDriversRepository trainDriversRepository,
             TrainBookingContext context,
@@ -31,6 +34,7 @@ namespace train_booking.Controllers
         )
         {
             _usersRepository = usersRepository;
+            _routesRepository = routesRepository;
             _dispatchersRepository = dispatchersRepository;
             _trainDriversRepository = trainDriversRepository;
             _context = context;
@@ -45,7 +49,20 @@ namespace train_booking.Controllers
 
             ViewBag.IsModalWindowShowRequired = isModalWindowShowRequired;
 
-            return View(dispatcher);
+            StatisticssViewModel statistics = new StatisticssViewModel()
+            {
+                Id = dispatcher.User.Id,
+                FirstName = dispatcher.User.FirstName,
+                LastName = dispatcher.User.LastName,
+                MiddleName = dispatcher.User.MiddleName,
+                Email = dispatcher.User.Email,
+                Address = dispatcher.Address,
+                Routes = _routesRepository.GetRoutes().ToList(),
+                Users = _usersRepository.GetUsers().ToList(),
+                TrainDrivers = _trainDriversRepository.GetTrainDriversForStatic().ToList()
+            };
+
+            return View(statistics);
         }
 
         [Authorize(Roles = "TrainDriver")]
@@ -56,7 +73,20 @@ namespace train_booking.Controllers
 
             ViewBag.IsModalWindowShowRequired = isModalWindowShowRequired;
 
-            return View(trainDriver);
+            StatisticssViewModel statistics = new StatisticssViewModel()
+            {
+                Id = trainDriver.User.Id,
+                FirstName = trainDriver.User.FirstName,
+                LastName = trainDriver.User.LastName,
+                MiddleName = trainDriver.User.MiddleName,
+                Email = trainDriver.User.Email,
+                HealthStatus = trainDriver.HealthStatus,
+                CertificateNumber = trainDriver.CertificateNumber,
+                Routes = _routesRepository.GetRoutes().ToList(),
+                Users = _usersRepository.GetUsers().ToList()
+            };
+
+            return View(statistics);
         }
 
         [Authorize(Roles = "Passenger")]
@@ -67,7 +97,19 @@ namespace train_booking.Controllers
 
             ViewBag.IsModalWindowShowRequired = isModalWindowShowRequired;
 
-            return View(passenger);
+            StatisticssViewModel statistics = new StatisticssViewModel()
+            {
+                Id = passenger.Id,
+                FirstName = passenger.FirstName,
+                LastName = passenger.LastName,
+                MiddleName = passenger.MiddleName,
+                Email = passenger.Email,
+                Passport = passenger.Passport,
+                Routes = _routesRepository.GetRoutes().ToList(),
+                Users = _usersRepository.GetUsers().ToList()
+            };
+
+            return View(statistics);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -78,7 +120,20 @@ namespace train_booking.Controllers
 
             ViewBag.IsModalWindowShowRequired = isModalWindowShowRequired;
 
-            return View(admin);
+            StatisticssViewModel statistics = new StatisticssViewModel()
+            {
+                Id = admin.Id,
+                FirstName = admin.FirstName,
+                LastName = admin.LastName,
+                MiddleName = admin.MiddleName,
+                Email = admin.Email,
+                Routes = _routesRepository.GetRoutes().ToList(),
+                Users = _usersRepository.GetUsers().ToList(),
+                TrainDrivers = _trainDriversRepository.GetTrainDriversForStatic().ToList(),
+                Dispatchers = _dispatchersRepository.GetDispatcherForStatic().ToList()
+            };
+
+            return View(statistics);
         }
 
     }

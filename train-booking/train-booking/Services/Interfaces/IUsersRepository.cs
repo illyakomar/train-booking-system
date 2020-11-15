@@ -18,5 +18,6 @@ namespace train_booking.Services.Interfaces
         Task<string> GetUserEmailById(string id);
         Task<User> GetUserById(string id);
         Task<User> GetUserByLogin(string userName);
+        IEnumerable<User> GetUsers();
     }
 }

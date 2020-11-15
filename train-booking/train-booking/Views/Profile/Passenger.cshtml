@@ -1,4 +1,4 @@
-﻿@model train_booking.Models.User
+﻿@model train_booking.ViewModels.Statistics.StatisticssViewModel
 
 
 @{
@@ -47,4 +47,27 @@
         </div>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title text-md-center text-xl-left">Кількість користувачів, які зареєстровані в системі</p>
+                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">@Model.Users.Count()</h3>
+                    <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title text-md-center text-xl-left">Кількість маршрутів</p>
+                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">@Model.Routes.Count()</h3>
+                    <i class="ti-direction icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
