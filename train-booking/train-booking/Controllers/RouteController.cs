@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -99,7 +100,8 @@ namespace train_booking.Controllers
                         Destination = routes.Destination,
                         DeparturePoint = routes.DeparturePoint,
                         DestinationDate = routes.DestinationDate,
-                        DeparturePointDate = routes.DeparturePointDate
+                        DeparturePointDate = routes.DeparturePointDate,
+                        NavigationUrl = routes.NavigationUrl
                     };
                     await _routesRepository.Insert(route);
                     return RedirectToAction("Index", "Route", new { message = "Маршрут успішно додано!" });
@@ -131,7 +133,8 @@ namespace train_booking.Controllers
                     Destination = route.Destination,
                     DeparturePoint = route.DeparturePoint,
                     DestinationDate = route.DestinationDate,
-                    DeparturePointDate = route.DeparturePointDate
+                    DeparturePointDate = route.DeparturePointDate,
+                    NavigationUrl = route.NavigationUrl
                 };
                 return View(model);
             }
@@ -155,6 +158,7 @@ namespace train_booking.Controllers
                 oldRoute.DeparturePoint = route.DeparturePoint;
                 oldRoute.DestinationDate = route.DestinationDate;
                 oldRoute.DeparturePointDate = route.DeparturePointDate;
+                oldRoute.NavigationUrl = route.NavigationUrl;
 
                 await _routesRepository.Update(oldRoute);
 

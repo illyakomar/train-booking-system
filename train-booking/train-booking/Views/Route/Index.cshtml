@@ -25,19 +25,12 @@
     <div class="col-md-12 stretch-card">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex align-items-start justify-content-between">
-                    <div>
-                        <h3 class="card-title text-uppercase">Маршрути</h3>
-                        <p class="mb-3">Усього: <span class="font-weight-bold text-danger">@Model.Routes.Count()</span> маршрути</p>
-                    </div>
-                    <div>
-                        <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
-                            <i class="ti-plus"></i>
-                        </a>
-                    </div>
-                </div>
+                <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
+                    <i class="ti-plus"></i>
+                </a>
+                <h5 class="card-title"><a>Маршрути</a></h5>
                 <div class="table-responsive">
-                    <table class="table table-hover datatable-table">
+                    <table class="table table-hover mt-2">
                         <thead class="text-center">
                             <tr class="table-info">
                                 <th class="visible">Пункт Відправлення</th>

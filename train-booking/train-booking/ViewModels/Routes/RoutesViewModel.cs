@@ -21,6 +21,7 @@ namespace train_booking.ViewModels.Routes
         [Required(ErrorMessage = "Поле Пункт Відправлення обов'язкове.")]
         [Display(Name = "Пункт Відправлення")]
         public string DeparturePoint { get; set; }
+        public string NavigationUrl { get; set; }
         public DateTime DestinationDate { get; set; }
         public DateTime DeparturePointDate { get; set; }
         [Required(ErrorMessage = "Поле Дистанція обов'язкове.")]

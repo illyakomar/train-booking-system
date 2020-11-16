@@ -14,29 +14,17 @@
                     <div>
                         <h3 class="card-title text-uppercase text-info">Маршрут: <span>@Model.DeparturePoint</span> <span>@Model.Destination</span></h3>
                         <p class="mb-3">Машиніст: <span class="font-weight-bold">@Model.TrainDriver.User.LastName @Model.TrainDriver.User.FirstName @Model.TrainDriver.User.MiddleName</span></p>
-                        <p>Дата та час відправлення: <span class="font-weight-bold">@Model.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</span></p>
+                        <p class="">Дата та час відправлення: <span class="font-weight-bold">@Model.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</span></p>
                         <p class="mb-3">Дата та час прибуття: <span class="font-weight-bold">@Model.DestinationDate.ToString("dd.MM.yyyy HH:mm")</span></p>
                         <p class="mb-3">Дистанція: <span class="font-weight-bold">@Model.Distance км</span></p>
-                        <div class="table-responsive mb-5">
+                        <div class="mb-5">
                             <h6>Потяг</h6>
-                            <table class="table table-hover datatable-table">
-                                <thead>
-                                    <tr class="table-info">
-                                        <th class="visible">Номер потягу</th>
-                                        <th class="visible">Тип потягу</th>
-                                        <th class="visible">Кількість вагонів</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>@Model.Train.NumberTrain</td>
-                                        <td>@Model.Train.TypeTrain</td>
-                                        <td>@Model.Train.Wagon.Count()</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <p class="mb-3 text-dark">№ Потягу: <span class="font-weight-bold">@Model.Train.NumberTrain</span></p>
+                            <p class="mb-3 text-dark">Тип потягу: <span class="font-weight-bold">@Model.Train.TypeTrain</span></p>
+                            <p class="mb-3 text-dark">Кількість вагонів: <span class="font-weight-bold">@Model.Train.Wagon.Count()</span></p>
                         </div>
                     </div>
+                    <div class="trainDetails"></div>
                     <div class="d-flex flex-wrap justify-content-end">
                         @if (User.IsInRole("Dispatcher") || User.IsInRole("Administrator"))
                         {
@@ -48,6 +36,28 @@
                         }
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.NavigationUrl != null)
+                {
+                    <iframe src="@Model.NavigationUrl" width="700" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                }
+                else
+                {
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15228.460213186032!2d30.47982528278412!3d50.44213565890824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JYv0JQg0JLQvtC60LfQsNC7INCa0LjQtdCy!5e0!3m2!1sru!2sua!4v1604147881524!5m2!1sru!2sua" width="700" height="500" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row m-3">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
                 <div class="table-responsive">
                     <h6>Вагони</h6>
                     <table class="table table-hover datatable-table">
@@ -70,76 +80,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-6 col-lg-12 stretch-card">
-        <div class="card">
-            <div class="card-body">
-                @if (Model.DeparturePoint == "Київ" && Model.Destination == "Полтава" || Model.Destination == "Київ" && Model.DeparturePoint == "Полтава")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1312740.8578756067!2d31.385268339493066!3d50.012348817536505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40d8260370ea44d3%3A0x6d0640711d79e251!2z0J_QvtC70YLQsNCy0LAt0JrQuNGX0LLRgdGM0LrQsA!3m2!1d49.6033718!2d34.5257605!4m5!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JfQsNC70ZbQt9C90LjRh9C90LjQuSDQstC-0LrQt9Cw0Lsg0JrQuNGX0LI!3m2!1d50.440494699999995!2d30.4896335!5e0!3m2!1sru!2sua!4v1604148181199!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Київ" && Model.Destination == "Харків" || Model.Destination == "Київ" && Model.DeparturePoint == "Харків")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1312740.8578756067!2d32.22606323949306!3d50.012348817536505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x4127a0552a3d38cd%3A0x7d5f68fdcf6b43a5!2z0YHRgtCw0L3RhtC40Y8g0KXQsNGA0YzQutC-0LIt0J_QsNGB0YHQsNC20LjRgNGB0LrQuNC5LCA2MTA1Miwg0L_Qu9C-0YnQsCDQn9GA0LjQstC-0LrQt9Cw0LvRjNC90LAsIDEsINCl0LDRgNC60ZbQsiwg0KXQsNGA0LrRltCy0YHRjNC60LAg0L7QsdC70LDRgdGC0Yw!3m2!1d49.989577!2d36.2043375!4m5!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JfQsNC70ZbQt9C90LjRh9C90LjQuSDQstC-0LrQt9Cw0Lsg0JrQuNGX0LI!3m2!1d50.440494699999995!2d30.4896335!5e0!3m2!1sru!2sua!4v1604148068563!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Полтава" && Model.Destination == "Харків" || Model.Destination == "Полтава" && Model.DeparturePoint == "Харків")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d329772.07973247377!2d35.08851910491495!3d49.7795885669611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40d8260370ea44d3%3A0x6d0640711d79e251!2z0J_QvtC70YLQsNCy0LAt0JrQuNGX0LLRgdGM0LrQsA!3m2!1d49.6033718!2d34.5257605!4m5!1s0x4127a0552a3d38cd%3A0x7d5f68fdcf6b43a5!2z0KXQsNGA0LrRltCyINCS0L7QutC30LDQuyDQpdCw0YDQutGW0LI!3m2!1d49.989577!2d36.2043375!5e0!3m2!1sru!2sua!4v1604218676105!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>   
-                }
-                else if (Model.DeparturePoint == "Київ" && Model.Destination == "Дніпро" || Model.Destination == "Київ" && Model.DeparturePoint == "Дніпро")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1328953.5450686244!2d31.63084071064785!3d49.41623532457533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40dbe250a9cd54b1%3A0xb66da7f64dbb5246!2z0LLQutC3LiDQlNC90LXQv9GALdCT0LvQsNCy0L3Ri9C5!3m2!1d48.477402999999995!2d35.015324199999995!4m5!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JfQsNC70ZbQt9C90LjRh9C90LjQuSDQstC-0LrQt9Cw0Lsg0JrQuNGX0LI!3m2!1d50.440494699999995!2d30.4896335!5e0!3m2!1sru!2sua!4v1604148930564!5m2!1sru!2sua" width="600" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Київ" && Model.Destination == "Одеса" || Model.Destination == "Київ" && Model.DeparturePoint == "Одеса")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1183023.4441979772!2d29.74847851368231!3d48.0030930588992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40c62def625cac79%3A0x517f353d9a2afdca!2z0J7QtNC10YHQsC3Ql9Cw0YHRgtCw0LLQsCAx!3m2!1d46.4776308!2d30.6545697!4m5!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JfQsNC70ZbQt9C90LjRh9C90LjQuSDQstC-0LrQt9Cw0Lsg0JrQuNGX0LI!3m2!1d50.440494699999995!2d30.4896335!5e0!3m2!1sru!2sua!4v1604149271848!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Київ" && Model.Destination == "Львів" || Model.Destination == "Львів" && Model.DeparturePoint == "Київ")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1320244.4420522426!2d26.116422339658765!3d49.73710771191253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x473add8569e442a1%3A0xa3f86c36188ae911!2z0JvRjNCy0ZbQsg!3m2!1d49.8397205!2d23.994381999999998!4m5!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JfQsNC70ZbQt9C90LjRh9C90LjQuSDQstC-0LrQt9Cw0Lsg0JrQuNGX0LI!3m2!1d50.440494699999995!2d30.4896335!5e0!3m2!1sru!2sua!4v1604149367333!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Полтава" && Model.Destination == "Дніпро" || Model.Destination == "Полтава" && Model.DeparturePoint == "Дніпро")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d666964.5971697797!2d34.80638597764842!3d49.23222362803416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40d8260370ea44d3%3A0x6d0640711d79e251!2z0J_QvtC70YLQsNCy0LAt0JrQuNGX0LLRgdGM0LrQsA!3m2!1d49.6033718!2d34.5257605!4m5!1s0x40dbe250a9cd54b1%3A0xb66da7f64dbb5246!2z0LLQutC3LiDQlNC90LXQv9GALdCT0LvQsNCy0L3Ri9C5!3m2!1d48.477402999999995!2d35.015324199999995!5e0!3m2!1sru!2sua!4v1604150164205!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Полтава" && Model.Destination == "Львів" || Model.Destination == "Полтава" && Model.DeparturePoint == "Львів")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2636711.5386172542!2d27.02419959421892!3d49.806491757910145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40d8260370ea44d3%3A0x6d0640711d79e251!2z0J_QvtC70YLQsNCy0LAt0JrQuNGX0LLRgdGM0LrQsA!3m2!1d49.6033718!2d34.5257605!4m5!1s0x473add8569e442a1%3A0xa3f86c36188ae911!2z0JvRjNCy0ZbQsg!3m2!1d49.8397205!2d23.994381999999998!5e0!3m2!1sru!2sua!4v1604150477452!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Полтава" && Model.Destination == "Одеса" || Model.Destination == "Полтава" && Model.DeparturePoint == "Одеса")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2710912.929929243!2d30.178176692993038!3d48.43012471536176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40d82582747485e1%3A0xe906c6ac4b1923a8!2z0J_QvtC70YLQsNCy0LAt0K7QttC90LDRjw!3m2!1d49.582161299999996!2d34.5948456!4m5!1s0x40c6317f18ccef07%3A0x9220496065a5bfd2!2z0J7QtNC10YHQsC3Qk9C-0LvQvtCy0L3QsA!3m2!1d46.4677309!2d30.7405476!5e0!3m2!1sru!2sua!4v1604150671308!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Харків" && Model.Destination == "Дніпро" || Model.Destination == "Харків" && Model.DeparturePoint == "Дніпро")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d666964.5971697797!2d35.05115242764841!3d49.23222362803416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x4127a0552a3d38cd%3A0x7d5f68fdcf6b43a5!2z0KXQsNGA0LrRltCyINCS0L7QutC30LDQuyDQpdCw0YDQutGW0LI!3m2!1d49.989577!2d36.2043375!4m5!1s0x40dbe250a9cd54b1%3A0xb66da7f64dbb5246!2z0LLQutC3LiDQlNC90LXQv9GALdCT0LvQsNCy0L3Ri9C5!3m2!1d48.477402999999995!2d35.015324199999995!5e0!3m2!1sru!2sua!4v1604150838588!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Харків" && Model.Destination == "Львів" || Model.Destination == "Харків" && Model.DeparturePoint == "Львів")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2636711.538617256!2d27.854034044218945!3d49.80649175791015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x4127a0552a3d38cd%3A0x7d5f68fdcf6b43a5!2z0KXQsNGA0LrRltCyINCS0L7QutC30LDQuyDQpdCw0YDQutGW0LI!3m2!1d49.989577!2d36.2043375!4m5!1s0x473add8569e442a1%3A0xa3f86c36188ae911!2z0JvRjNCy0ZbQsg!3m2!1d49.8397205!2d23.994381999999998!5e0!3m2!1sru!2sua!4v1604150966838!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Харків" && Model.Destination == "Одеса" || Model.Destination == "Харків" && Model.DeparturePoint == "Одеса")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2710801.012511541!2d29.913535212965062!3d48.43222255945717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x4127a0552a3d38cd%3A0x7d5f68fdcf6b43a5!2z0KXQsNGA0LrRltCyINCS0L7QutC30LDQuyDQpdCw0YDQutGW0LI!3m2!1d49.989577!2d36.2043375!4m5!1s0x40c6317f18ccef07%3A0x9220496065a5bfd2!2z0J7QtNC10YHQsC3Qk9C-0LvQvtCy0L3QsA!3m2!1d46.4677309!2d30.7405476!5e0!3m2!1sru!2sua!4v1604151099754!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Дніпро" && Model.Destination == "Львів" || Model.Destination == "Дніпро" && Model.DeparturePoint == "Львів")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2656276.319463898!2d27.258053946255746!3d49.44634196553629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40dbe250a9cd54b1%3A0xb66da7f64dbb5246!2z0LLQutC3LiDQlNC90LXQv9GALdCT0LvQsNCy0L3Ri9C5!3m2!1d48.477402999999995!2d35.015324199999995!4m5!1s0x473add8569e442a1%3A0xa3f86c36188ae911!2z0JvRjNCy0ZbQsg!3m2!1d49.8397205!2d23.994381999999998!5e0!3m2!1sru!2sua!4v1604151734177!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Дніпро" && Model.Destination == "Одеса" || Model.Destination == "Дніпро" && Model.DeparturePoint == "Одеса")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2723101.4863109794!2d31.19359666391719!3d48.2012456770668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40dbe250a9cd54b1%3A0xb66da7f64dbb5246!2z0LLQutC3LiDQlNC90LXQv9GALdCT0LvQsNCy0L3Ri9C5!3m2!1d48.477402999999995!2d35.015324199999995!4m5!1s0x40c6317f18ccef07%3A0x9220496065a5bfd2!2z0J7QtNC10YHQsC3Qk9C-0LvQvtCy0L3QsA!3m2!1d46.4677309!2d30.7405476!5e0!3m2!1sru!2sua!4v1604151788317!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else if (Model.DeparturePoint == "Одеса" && Model.Destination == "Львів" || Model.Destination == "Одеса" && Model.DeparturePoint == "Львів")
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2708925.4864389338!2d25.12024707313964!3d48.46736836484887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x40c6317f18ccef07%3A0x9220496065a5bfd2!2z0J7QtNC10YHQsC3Qk9C-0LvQvtCy0L3QsA!3m2!1d46.4677309!2d30.7405476!4m5!1s0x473add8569e442a1%3A0xa3f86c36188ae911!2z0JvRjNCy0ZbQsg!3m2!1d49.8397205!2d23.994381999999998!5e0!3m2!1sru!2sua!4v1604151838037!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                }
-                else
-                {
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15228.460213186032!2d30.47982528278412!3d50.44213565890824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cef2a01742cf%3A0x94d02f977be98e0!2z0JYv0JQg0JLQvtC60LfQsNC7INCa0LjQtdCy!5e0!3m2!1sru!2sua!4v1604147881524!5m2!1sru!2sua" width="700" height="500" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
-                }
             </div>
         </div>
     </div>

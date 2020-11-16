@@ -14,19 +14,12 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-            <div>
-                <h5 class="card-title">Потяги</h5>
-                <p class="card-text">Усього: <span class="font-weight-bold text-danger">@Model.Count()</span> потяги</p>
-            </div>
-            <div>
-                <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
-                    <i class="ti-plus"></i>
-                </a>
-            </div>
-        </div>
+        <a class="btn btn-outline-primary btn-rounded btn-icon d-flex align-items-center float-right justify-content-center" asp-action="Create">
+            <i class="ti-plus"></i>
+        </a>
+        <h5 class="card-title"><a>Потяги</a></h5>
         <div class="table-responsive">
-            <table class="table table-hover datatable-table">
+            <table class="table table-hover mt-2">
                 <thead class="text-center">
                     <tr class="table-info">
                         <th class="visible text-left">Номер потягу</th>

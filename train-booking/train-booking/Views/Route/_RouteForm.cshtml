@@ -19,7 +19,7 @@
         <div class="form-group row">
             <label asp-for="Destination" class="col-sm-3 col-form-label">Пункт Прибуття</label>
             <div class="col-sm-9">
-                <input asp-for="Destination" type="text" class="form-control" placeholder="Наприклад: Харків"/>
+                <input asp-for="Destination" type="text" class="form-control" placeholder="Наприклад: Харків" />
                 <span asp-validation-for="Destination"></span>
             </div>
         </div>
@@ -38,9 +38,15 @@
             </div>
         </div>
         <div class="form-group row">
+            <label asp-for="NavigationUrl" class="col-sm-3 col-form-label">Посилання на маршрут</label>
+            <div class="col-sm-9">
+                <input asp-for="NavigationUrl" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
             <label asp-for="Distance" class="col-sm-3 col-form-label">Відстань</label>
             <div class="col-sm-9">
-                <input asp-for="Distance" type="number" class="form-control" min="1" max="10000"/>
+                <input asp-for="Distance" type="number" class="form-control" min="1" max="10000" />
                 <span asp-validation-for="Distance"></span>
             </div>
         </div>

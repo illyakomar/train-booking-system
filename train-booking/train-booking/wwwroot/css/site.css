@@ -89,3 +89,13 @@ body {
     overflow-y: scroll;
     height: 85vh;
 }
+
+.trainDetails {
+    background-image: url('../lib/template/images/train.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 350px;
+    width: 350px;
+}

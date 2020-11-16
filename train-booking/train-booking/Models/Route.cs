@@ -11,6 +11,7 @@ namespace train_booking.Models
         public string DeparturePoint { get; set; }
         public DateTime DestinationDate { get; set; }
         public DateTime DeparturePointDate { get; set; }
+        public string NavigationUrl { get; set; }
         public int TrainId { get; set; }
         public int TrainDriverId { get; set; }
 
