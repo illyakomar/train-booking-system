@@ -99,3 +99,13 @@ body {
     height: 350px;
     width: 350px;
 }
+
+.tableForTicket{
+    width: 200px;
+}
+
+.table_block {
+    border-radius: 15px;
+    display: block;
+    background-color: snow;
+}

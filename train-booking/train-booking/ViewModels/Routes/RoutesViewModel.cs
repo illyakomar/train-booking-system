@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using train_booking.ViewModels.TrainDrivers;
 using train_booking.ViewModels.Trains;
 
@@ -22,8 +19,11 @@ namespace train_booking.ViewModels.Routes
         [Display(Name = "Пункт Відправлення")]
         public string DeparturePoint { get; set; }
         public string NavigationUrl { get; set; }
-        public DateTime DestinationDate { get; set; }
+        [StartLessThanEnd("DestinationDate", ErrorMessage = "Дата та час Відправлення не може бути більшою за дату та час прибуття.")]
+        [Required(ErrorMessage = "Дата та час Відправлення обов'язкове.")]
         public DateTime DeparturePointDate { get; set; }
+        [Required(ErrorMessage = "Дата та час прибуття обов'язкове.")]
+        public DateTime DestinationDate { get; set; }
         [Required(ErrorMessage = "Поле Дистанція обов'язкове.")]
         [Display(Name = "Пункт Дистанція обов'язкове")]
         public int Distance { get; set; }

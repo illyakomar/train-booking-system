@@ -3,47 +3,65 @@
 @{ ViewData["Title"] = "Мої квитки"; }
 
 
-
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title"><a>Мої квитки</a></h5>
-        <div class="table-responsive">
-            <table class="table table-hover datatable-table mt-2">
-                <thead class="text-center">
-                    <tr class="table-info">
-                        <th class="visible text-left">№ Квитка</th>
-                        <th class="visible text-left">П.І.Б.</th>
-                        <th class="visible text-left">Пункт відправлення</th>
-                        <th class="visible text-left">Пункт призначення</th>
-                        <th class="visible text-left">Номер потягу</th>
-                        <th class="visible text-left">Тип вагона</th>
-                        <th class="visible text-left">№ Вагону</th>
-                        <th class="visible text-left">Місце</th>
-                        <th class="visible text-left">Дата поїздки</th>
-                        <th class="visible text-left">Ціна</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    @foreach (var seat in Model)
-                    {
-        <tr>
-            <td class="text-center">@seat.Id</td>
-            <td class="text-center">@seat.User.LastName @seat.User.FirstName @seat.User.MiddleName</td>
-            <td class="text-center">@seat.Wagon.Train.Route.DeparturePoint</td>
-            <td class="text-center">@seat.Wagon.Train.Route.Destination</td>
-            <td class="text-center">@seat.Wagon.Train.NumberTrain</td>
-            <td class="text-center">@seat.Wagon.TypeWagon</td>
-            <td class="text-center">@seat.Wagon.WagonId</td>
-            <td class="text-center">@seat.SeatNumber</td>
-            <td class="text-center">@seat.Wagon.Train.Route.DeparturePointDate</td>
-            <td class="text-center">@seat.Wagon.PlacePrice</td>
-        </tr>}
-                </tbody>
-            </table>
+@foreach (var seat in Model)
+{
+    <div class="col-8 stretch-card grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover datatable-table mt-2">
+                        <thead class="text-center">
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column visible"></th>
+                                <th data-column="Wagon" class="vertical-header-column visible"></th>
+                                <th data-column="Train" class="vertical-header-column visible"></th>
+                                <th data-column="InfoTrain" class="vertical-header-column visible"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Призвіще, Ім'я, по батькові</th>
+                                <td data-column="Wagon">@seat.User.LastName @seat.User.FirstName @seat.User.MiddleName</td>
+                                <th data-column="Train" class="vertical-header-column">Номер потягу</th>
+                                <td data-column="InfoTrain">@seat.Wagon.Train.NumberTrain</td>
+                            </tr>
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Відправлення</th>
+                                <td data-column="Wagon">@seat.Wagon.Train.Route.DeparturePoint</td>
+                                <th data-column="Train" class="vertical-header-column">Тип вагона</th>
+                                <td data-column="InfoTrain">@seat.Wagon.TypeWagon</td>
+                            </tr>
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Призначення</th>
+                                <td data-column="Wagon">@seat.Wagon.Train.Route.Destination</td>
+                                <th data-column="Train" class="vertical-header-column">Номер Вагону</th>
+                                <td data-column="InfoTrain">@seat.Wagon.WagonId</td>
+                            </tr>
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Дата/час відпр.</th>
+                                <td data-column="Wagon">@seat.Wagon.Train.Route.DeparturePointDate</td>
+                                <th data-column="Train" class="vertical-header-column">Місце</th>
+                                <td data-column="InfoTrain">@seat.SeatNumber</td>
+                            </tr>
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Дата/час приб.</th>
+                                <td data-column="Wagon">@seat.Wagon.Train.Route.DestinationDate</td>
+                                <th data-column="Train" class="vertical-header-column">Ціна UAH</th>
+                                <td data-column="InfoTrain">@seat.Wagon.PlacePrice</td>
+                            </tr>
+                            <tr>
+                                <th data-column="Username" class="vertical-header-column">Тип потягу</th>
+                                <td data-column="Wagon">@seat.Wagon.Train.TypeTrain</td>
+                                <th data-column="Train" class="vertical-header-column">Номер квитка</th>
+                                <td data-column="InfoTrain">@seat.Id</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
+}
 @section Styles{
 
     <link rel="stylesheet" href="~/lib/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css">

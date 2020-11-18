@@ -10,7 +10,7 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-12 grid-margin stretch-card">
+            <div class="col-12 stretch-card grid-margin">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-start justify-content-between">
@@ -35,46 +35,49 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 grid-margin stretch-card">
+            <div class="col-12 stretch-card grid-margin">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover datatable-table">
-                                <thead class="text-center">
-                                    <tr class="table-info">
-                                        <th class="visible">Пункт Відправлення</th>
-                                        <th class="visible">Пункт Призначення</th>
-                                        <th class="visible">Дистанція (км)</th>
-                                        <th class="visible">Дата та час відправлення</th>
-                                        <th class="visible">Дата та час прибуття</th>
-                                        <th>Дії</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tickets-table" class="text-center">
-                                    @foreach (var route in Model.Routes)
-                                    {
-                                        <tr>
-                                            <td>@route.DeparturePoint</td>
-                                            <td>@route.Destination</td>
-                                            <td>@route.Distance</td>
-                                            <td>@route.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</td>
-                                            <td>@route.DestinationDate.ToString("dd.MM.yyyy HH:mm")</td>
-
-                                            <td class="text-center">
-                                                <form class="d-inline-flex" method="get" asp-action="Details" asp-route-trainId="@route.TrainId">
-                                                    <button type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
-                                                        Вибрати
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="text-center">
+                                <tr>
+                                    <th class="text-center tableForTicket">Пункт Відправлення</th>
+                                    <th class="text-center tableForTicket">Пункт Призначення</th>
+                                    <th class="text-center tableForTicket">Дистанція (км)</th>
+                                    <th class="text-center tableForTicket">Дата та час відправлення</th>
+                                    <th class="text-center tableForTicket">Дата та час прибуття</th>
+                                    <th class="text-center tableForTicket">Дії</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
+            @foreach (var route in Model.Routes)
+            {
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="table-responsive table_block">
+                        <table class="table table-hover" id="tickets-table">
+                            <tbody class="text-center">
+                                <tr>
+                                    <td class="text-center tableForTicket">@route.DeparturePoint</td>
+                                    <td class="text-center tableForTicket">@route.Destination</td>
+                                    <td class="text-center tableForTicket">@route.Distance</td>
+                                    <td class="text-center tableForTicket">@route.DeparturePointDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td class="text-center tableForTicket">@route.DestinationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td class="text-center tableForTicket">
+                                        <form class="d-inline-flex" method="get" asp-action="Details" asp-route-trainId="@route.TrainId">
+                                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-fw">
+                                                Вибрати
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
