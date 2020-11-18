@@ -141,11 +141,10 @@ footer.footer {
 
 
 .btn-landing-login {
-    border: 5px solid #3a32a8;
     width: 120px;
 }
 
 .btn-landing-login-text {
     font-weight: bold;
-    color: #3a32a8;
+    color: black;
 }

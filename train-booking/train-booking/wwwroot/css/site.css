@@ -109,3 +109,8 @@ body {
     display: block;
     background-color: snow;
 }
+
+.dataTables_filter {
+    float: left !important;
+    color: cornflowerblue !important;
+}
