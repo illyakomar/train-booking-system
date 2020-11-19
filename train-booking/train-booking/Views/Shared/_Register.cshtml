@@ -58,7 +58,7 @@
         <div class="md-form form-sm mb-4">
             <div class="form-group">
                 <label asp-for="Passport">Номер паспорта</label>
-                <input asp-for="Passport" type="text" class="form-control form-control-md" id="phonenumber" placeholder="Номер паспорта" required>
+                <input asp-for="Passport" type="text" class="form-control form-control-md" id="phonenumber" placeholder="Номер паспорта" maxlength="15" required>
                 <span class="small" asp-validation-for="Passport"></span>
                 <div class="valid-feedback">
                     Паспорт вказано.

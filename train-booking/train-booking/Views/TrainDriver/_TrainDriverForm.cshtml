@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <label asp-for="Passport" class="col-sm-3 col-form-label">Номер паспорта:</label>
                     <div class="col-sm-9">
-                        <input asp-for="Passport" type="text" class="form-control" maxlength="100" />
+                        <input asp-for="Passport" type="text" class="form-control" maxlength="15" />
                         <span class="small" asp-validation-for="Passport"></span>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 <div class="form-group row">
                     <label asp-for="HealthStatus" class="col-sm-3 col-form-label">Медична книга:</label>
                     <div class="col-sm-9">
-                        <input asp-for="HealthStatus" type="text" class="form-control" maxlength="100" />
+                        <input asp-for="HealthStatus" type="text" class="form-control" maxlength="15" />
                         <span class="small" asp-validation-for="HealthStatus"></span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="form-group row">
                     <label asp-for="CertificateNumber" class="col-sm-3 col-form-label">Номер сертифікату:</label>
                     <div class="col-sm-9">
-                        <input asp-for="CertificateNumber" type="number" class="form-control" min="0" maxlength="100" />
+                        <input asp-for="CertificateNumber" type="number" class="form-control" min="0" maxlength="15" />
                         <span class="small" asp-validation-for="CertificateNumber"></span>
                     </div>
                 </div>
